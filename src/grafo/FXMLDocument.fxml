@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="grafo.FXMLDocumentController">
+   <bottom>
+      <AnchorPane prefHeight="310.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox fx:id="paneTabelas" layoutX="-5.0" layoutY="-1.0" prefHeight="312.0" prefWidth="1281.0" spacing="5.0">
+               <children>
+                  <VBox fx:id="vb_vertices" alignment="TOP_CENTER" prefHeight="283.0" prefWidth="99.0" spacing="6.0">
+                     <children>
+                        <Label fx:id="lb_vertices" alignment="CENTER" prefHeight="43.0" prefWidth="70.0" text="Vertices" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="283.0" prefWidth="380.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="386.0" text="Matriz Adjacente" />
+                        <TableView fx:id="tv_ma" prefHeight="277.0" prefWidth="279.0" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="283.0" prefWidth="525.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="529.0" text="Matriz de Incidencia" />
+                        <TableView fx:id="tv_mi" prefHeight="267.0" prefWidth="525.0" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="283.0" prefWidth="362.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="392.0" text="Lista" />
+                        <VBox fx:id="paneLista" prefHeight="295.0" prefWidth="337.0" />
+                     </children>
+                  </VBox>
+               </children></HBox>
+         </children>
+      </AnchorPane>
+   </bottom>
+   <center>
+      <HBox prefHeight="466.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane fx:id="paneGrafico" onMouseClicked="#evtMouseClicked" prefHeight="386.0" prefWidth="983.0" style="-fx-border-color: black;" />
+            <AnchorPane prefHeight="396.0" prefWidth="344.0" style="-fx-background-color: #d1d1d1;">
+               <children>
+                  <JFXComboBox fx:id="cbVertice1" layoutX="27.0" layoutY="60.0" promptText="Vertice" />
+                  <JFXComboBox fx:id="cbVertice2" layoutX="194.0" layoutY="60.0" promptText="Vertice" />
+                  <Label layoutX="140.0" layoutY="64.0" text="Até" />
+                  <JFXButton fx:id="btCriar" layoutX="106.0" layoutY="115.0" onAction="#clickCriar" text="Criar" AnchorPane.leftAnchor="106.0" AnchorPane.topAnchor="115.0" />
+                  <JFXButton fx:id="btRemover" layoutX="170.0" layoutY="115.0" onAction="#clickRemover" text="Remover" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+   </center>
+</BorderPane>
