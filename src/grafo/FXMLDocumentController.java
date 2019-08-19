@@ -102,7 +102,7 @@ public class FXMLDocumentController implements Initializable
                 }
                 
             });
-            
+            //quando cria novo vertice, gera nova coluna na matriz adjascente
             TableColumn c = new TableColumn(aux.getText());
             c.setMaxWidth(35);
             c.setCellValueFactory(new PropertyValueFactory("parametro" + aux.getText()));
@@ -154,7 +154,7 @@ public class FXMLDocumentController implements Initializable
     }
     
     private void atualiza_tela()
-    {
+    {//imprimi os vertices (do grafico e da lista) e as arestas
         paneGrafico.getChildren().clear();
         for (int i = 0; i < vertices.size(); i++)
             paneGrafico.getChildren().add(vertices.get(i).getButton());
@@ -170,7 +170,9 @@ public class FXMLDocumentController implements Initializable
         for (int i = 0; i < arestas.size(); i++)
             paneGrafico.getChildren().add(arestas.get(i).getLinha());
         
-        
+        //a lista funciona como um hbox dentro de um vbox, assim toda vez que um vertice é criado
+        //um novo hbox é criado pra ele. qnd uma aresta é criada, os componentes (Arrow e Button) sao inseridos 
+        //no hbox. Era pra estar funcionando, mas nao ta
         paneLista.getChildren().clear();
         lista.clear();
         for (int i = 0; i < vertices.size(); i++)
@@ -198,8 +200,6 @@ public class FXMLDocumentController implements Initializable
             int octante;
             int deltaX,deltaY;
 
-            QuadCurve linha;
-
             for (int i = 0; i < vertices.size(); i++)
             {
                 if(cbVertice1.getSelectionModel().getSelectedItem() == vertices.get(i).getButton().getText())
@@ -219,7 +219,7 @@ public class FXMLDocumentController implements Initializable
 
             deltaX = (int)(x2 - x1);
             deltaY = (int)(y2 - y1);
-
+            //Esse trecho é pra deixa as arestar menos tortas, esta quase bom
             if(Math.abs(deltaX) > Math.abs(deltaY))
             {
                 if(deltaX > 0)
@@ -243,7 +243,8 @@ public class FXMLDocumentController implements Initializable
                     x2 = x2 + vertices.get(0).getButton().getWidth()/2;
             }
             
-            
+            //verifica se uma aresta que esta pra ser criada nao existe no sentido contrario, substituindo a cabeça da
+            //flecha. Se for criado (1,2), ele cria com flecha. Se dps foi criado (2,1) ele substitui a flecha por uma reta
             if(verifica_sentido(b1,b2))
                 seta = new Arrow(x1, y1, x2, y2,b1.getText(),b2.getText());
             else
@@ -271,14 +272,14 @@ public class FXMLDocumentController implements Initializable
     }
 
     private void addLabel(Button aux)
-    {
+    {//sao como os vertices sao exibidos no lado esquedo da tela
         Label l = new Label(aux.getText());
         l.setMaxHeight(40);
         vb_vertices.getChildren().add(l);
     }
     
     private void inicializaCelulas(Button aux)
-    {
+    {//meio cachorrada, mas funciona
         ObservableList<Tabela>a = tv_ma.getItems();
         if(a.isEmpty())
             a.add(new Tabela("-"));
@@ -310,7 +311,7 @@ public class FXMLDocumentController implements Initializable
     }
     
     private void alteraCelula(Button b1,Button b2)
-    {
+    {//outra cachorrada
         ObservableList<Tabela>celulas = tv_ma.getItems();
         Tabela t = celulas.get(Integer.parseInt(b1.getText()));
         
@@ -407,7 +408,7 @@ public class FXMLDocumentController implements Initializable
     }
 
     private void atualiza_matriz_incidencia()
-    {
+    {//ta funcionando +-
         tv_mi.getColumns().clear();
         tv_mi.getItems().clear();
         for (int i = 0; i < arestas.size(); i++)
@@ -424,7 +425,7 @@ public class FXMLDocumentController implements Initializable
     }
 
     private void atualiza_lista(Arrow seta)
-    {
+    {//Nao funciona
         HBox pane = (HBox)lista.get(Integer.parseInt(seta.getOrigem()));
         pane.getChildren().add(new Arrow(0, 0, 30, 0, null, null));
         
