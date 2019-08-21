@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -35,7 +36,7 @@
                   <VBox prefHeight="283.0" prefWidth="362.0">
                      <children>
                         <Label alignment="CENTER" prefHeight="17.0" prefWidth="392.0" text="Lista" />
-                        <VBox fx:id="paneLista" prefHeight="295.0" prefWidth="337.0" />
+                        <VBox fx:id="paneLista" prefHeight="295.0" prefWidth="337.0" spacing="5.0" />
                      </children>
                   </VBox>
                </children></HBox>
@@ -51,8 +52,9 @@
                   <JFXComboBox fx:id="cbVertice1" layoutX="27.0" layoutY="60.0" promptText="Vertice" />
                   <JFXComboBox fx:id="cbVertice2" layoutX="194.0" layoutY="60.0" promptText="Vertice" />
                   <Label layoutX="140.0" layoutY="64.0" text="Até" />
-                  <JFXButton fx:id="btCriar" layoutX="106.0" layoutY="115.0" onAction="#clickCriar" text="Criar" AnchorPane.leftAnchor="106.0" AnchorPane.topAnchor="115.0" />
-                  <JFXButton fx:id="btRemover" layoutX="170.0" layoutY="115.0" onAction="#clickRemover" text="Remover" />
+                  <JFXButton fx:id="btCriar" layoutX="95.0" layoutY="147.0" onAction="#clickCriar" text="Criar" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="147.0" />
+                  <JFXButton fx:id="btRemover" layoutX="159.0" layoutY="147.0" onAction="#clickRemover" text="Remover" />
+                  <JFXTextField fx:id="tfCusto" labelFloat="true" layoutX="110.0" layoutY="99.0" prefHeight="25.0" prefWidth="79.0" promptText="Custo" />
                </children>
             </AnchorPane>
          </children>

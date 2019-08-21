@@ -7,6 +7,7 @@ package grafo;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import com.sun.javafx.collections.ElementObservableListDecorator;
 import grafo.Uteis.Aresta;
 import grafo.Uteis.Arrow;
@@ -20,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -68,6 +70,8 @@ public class FXMLDocumentController implements Initializable
     private Label lb_vertices;
     @FXML
     private VBox paneLista;
+    @FXML
+    private JFXTextField tfCusto;
    
     
     @Override
@@ -114,7 +118,7 @@ public class FXMLDocumentController implements Initializable
             addLabel(aux);
                     
             vertices.add(new Vertice(aux));
-            atualiza_tela();
+            atualiza_tela(true);
         }
     }
     
@@ -147,13 +151,13 @@ public class FXMLDocumentController implements Initializable
                 if(event.getCode() == KeyCode.DELETE)
                 {
                     vertices.remove(b);
-                    atualiza_tela();
+                    atualiza_tela(true);
                 }
             }
         });
     }
     
-    private void atualiza_tela()
+    private void atualiza_tela(boolean flag)
     {//imprimi os vertices (do grafico e da lista) e as arestas
         paneGrafico.getChildren().clear();
         for (int i = 0; i < vertices.size(); i++)
@@ -173,16 +177,20 @@ public class FXMLDocumentController implements Initializable
         //a lista funciona como um hbox dentro de um vbox, assim toda vez que um vertice é criado
         //um novo hbox é criado pra ele. qnd uma aresta é criada, os componentes (Arrow e Button) sao inseridos 
         //no hbox. Era pra estar funcionando, mas nao ta
-        paneLista.getChildren().clear();
-        lista.clear();
-        for (int i = 0; i < vertices.size(); i++)
+        if(flag)
         {
-            HBox pane = new HBox();
-            pane.setPrefWidth(350);
-            pane.setId(String.valueOf(i));
-            pane.getChildren().add(new Button(vertices.get(i).getButton().getText()));
-            paneLista.getChildren().add(pane);
-            lista.add(pane);
+            paneLista.getChildren().clear();
+            lista.clear();
+            for (int i = 0; i < vertices.size(); i++)
+            {
+                HBox pane = new HBox();
+                pane.setPrefWidth(350);
+                pane.setAlignment(Pos.CENTER_LEFT);
+                pane.setId(String.valueOf(i));
+                pane.getChildren().add(new Button(vertices.get(i).getButton().getText()));
+                paneLista.getChildren().add(pane);
+                lista.add(pane);
+            }
         }
     }
 
@@ -254,11 +262,11 @@ public class FXMLDocumentController implements Initializable
             }
             arestas.add(new Aresta("", seta, new Label(b1.getText() + "-" + b2.getText())));
 
-            alteraCelula(b1,b2);
+            alteraCelula(b1,b2,seta);
             
             atualiza_matriz_incidencia();
 
-            atualiza_tela();
+            atualiza_tela(false);
             
             atualiza_lista(seta);
         }
@@ -310,7 +318,7 @@ public class FXMLDocumentController implements Initializable
         tv_ma.setItems(a);
     }
     
-    private void alteraCelula(Button b1,Button b2)
+    private void alteraCelula(Button b1,Button b2,Arrow seta)
     {//outra cachorrada
         ObservableList<Tabela>celulas = tv_ma.getItems();
         Tabela t = celulas.get(Integer.parseInt(b1.getText()));
@@ -318,71 +326,74 @@ public class FXMLDocumentController implements Initializable
         switch(Integer.parseInt(b2.getText()))
         {
             case 0:
-                t.setParametro0("1");
+                t.setParametro0(tfCusto.getText());
                 break;
             case 1:
-                t.setParametro1("1");
+                t.setParametro1(tfCusto.getText());
                 break;
             case 2:
-                t.setParametro2("1");
+                t.setParametro2(tfCusto.getText());
                 break;
             case 3:
-                t.setParametro3("1");
+                t.setParametro3(tfCusto.getText());
                 break;
             case 4:
-                t.setParametro4("1");
+                t.setParametro4(tfCusto.getText());
                 break;
             case 5:
-                t.setParametro5("1");
+                t.setParametro5(tfCusto.getText());
                 break;
             case 6:
-                t.setParametro6("1");
+                t.setParametro6(tfCusto.getText());
                 break;
             case 7:
-                t.setParametro7("1");
+                t.setParametro7(tfCusto.getText());
                 break;
             case 8:
-                t.setParametro8("1");
+                t.setParametro8(tfCusto.getText());
                 break;
             case 9:
-                t.setParametro9("1");
+                t.setParametro9(tfCusto.getText());
                 break;
         }
         
-        t = celulas.get(Integer.parseInt(b2.getText()));
-        
-        switch(Integer.parseInt(b1.getText()))
+        if(seta.getDefaultArrowHeadSize() == 0)
         {
-            case 0:
-                t.setParametro0("1");
-                break;
-            case 1:
-                t.setParametro1("1");
-                break;
-            case 2:
-                t.setParametro2("1");
-                break;
-            case 3:
-                t.setParametro3("1");
-                break;
-            case 4:
-                t.setParametro4("1");
-                break;
-            case 5:
-                t.setParametro5("1");
-                break;
-            case 6:
-                t.setParametro6("1");
-                break;
-            case 7:
-                t.setParametro7("1");
-                break;
-            case 8:
-                t.setParametro8("1");
-                break;
-            case 9:
-                t.setParametro9("1");
-                break;
+            t = celulas.get(Integer.parseInt(b2.getText()));
+        
+            switch(Integer.parseInt(b1.getText()))
+            {
+                case 0:
+                    t.setParametro0(tfCusto.getText());
+                    break;
+                case 1:
+                    t.setParametro1(tfCusto.getText());
+                    break;
+                case 2:
+                    t.setParametro2(tfCusto.getText());
+                    break;
+                case 3:
+                    t.setParametro3(tfCusto.getText());
+                    break;
+                case 4:
+                    t.setParametro4(tfCusto.getText());
+                    break;
+                case 5:
+                    t.setParametro5(tfCusto.getText());
+                    break;
+                case 6:
+                    t.setParametro6(tfCusto.getText());
+                    break;
+                case 7:
+                    t.setParametro7(tfCusto.getText());
+                    break;
+                case 8:
+                    t.setParametro8(tfCusto.getText());
+                    break;
+                case 9:
+                    t.setParametro9(tfCusto.getText());
+                    break;
+            }
         }
         tv_ma.setItems(celulas);
         tv_ma.refresh();
@@ -428,6 +439,6 @@ public class FXMLDocumentController implements Initializable
     {//Nao funciona
         HBox pane = (HBox)lista.get(Integer.parseInt(seta.getOrigem()));
         pane.getChildren().add(new Arrow(0, 0, 30, 0, null, null));
-        
+        pane.getChildren().add(new Button(seta.getDestino()));
     }
 }
