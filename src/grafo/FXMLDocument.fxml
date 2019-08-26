@@ -55,6 +55,9 @@
                   <JFXButton fx:id="btCriar" layoutX="95.0" layoutY="147.0" onAction="#clickCriar" text="Criar" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="147.0" />
                   <JFXButton fx:id="btRemover" layoutX="159.0" layoutY="147.0" onAction="#clickRemover" text="Remover" />
                   <JFXTextField fx:id="tfCusto" labelFloat="true" layoutX="110.0" layoutY="99.0" prefHeight="25.0" prefWidth="79.0" promptText="Custo" />
+                  <Label fx:id="lbSimples" layoutX="39.0" layoutY="215.0" prefHeight="22.0" prefWidth="78.0" text="simples" />
+                  <Label fx:id="lbRegular" layoutX="39.0" layoutY="246.0" prefHeight="22.0" prefWidth="78.0" text="regular" />
+                  <Label fx:id="lbCompleto" layoutX="39.0" layoutY="277.0" prefHeight="22.0" prefWidth="78.0" text="completo" />
                </children>
             </AnchorPane>
          </children>

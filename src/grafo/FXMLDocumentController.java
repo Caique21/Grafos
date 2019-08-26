@@ -8,7 +8,6 @@ package grafo;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import com.sun.javafx.collections.ElementObservableListDecorator;
 import grafo.Uteis.Aresta;
 import grafo.Uteis.Arrow;
 import grafo.Uteis.Tabela;
@@ -16,13 +15,15 @@ import grafo.Uteis.Vertice;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -36,7 +37,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.QuadCurve;
 
 /**
  *
@@ -48,6 +48,8 @@ public class FXMLDocumentController implements Initializable
     private ArrayList<Aresta>arestas;
     private Arrow seta;
     private ArrayList<HBox>lista;
+    ObservableList<String> linhas = FXCollections.observableArrayList();
+    
     @FXML
     private HBox paneTabelas;
     @FXML
@@ -63,7 +65,7 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TableView<Tabela> tv_ma;
     @FXML
-    private TableView<Tabela> tv_mi;
+    private TableView<String> tv_mi;
     @FXML
     private VBox vb_vertices;
     @FXML
@@ -72,6 +74,12 @@ public class FXMLDocumentController implements Initializable
     private VBox paneLista;
     @FXML
     private JFXTextField tfCusto;
+    @FXML
+    private Label lbSimples;
+    @FXML
+    private Label lbRegular;
+    @FXML
+    private Label lbCompleto;
    
     
     @Override
@@ -80,6 +88,9 @@ public class FXMLDocumentController implements Initializable
         vertices = new ArrayList<>();
         arestas = new ArrayList<>();
         lista = new ArrayList<>();
+        lbCompleto.setText("");
+        lbRegular.setText("");
+        lbSimples.setText("");
     }    
 
     @FXML
@@ -199,6 +210,8 @@ public class FXMLDocumentController implements Initializable
     {
         if(cbVertice1.getSelectionModel().getSelectedIndex() >=0 && cbVertice2.getSelectionModel().getSelectedIndex() >=0)
         {
+            if(tfCusto.getText().equals(""))
+                tfCusto.setText("1");
             Button b1 = new Button(""),b2 = new Button("");
             double x1 = 0;
             double y1 = 0;
@@ -253,22 +266,29 @@ public class FXMLDocumentController implements Initializable
             
             //verifica se uma aresta que esta pra ser criada nao existe no sentido contrario, substituindo a cabeça da
             //flecha. Se for criado (1,2), ele cria com flecha. Se dps foi criado (2,1) ele substitui a flecha por uma reta
-            if(verifica_sentido(b1,b2))
-                seta = new Arrow(x1, y1, x2, y2,b1.getText(),b2.getText());
+            if(verifica_aresta_duplicada(b1,b2))
+                new Alert(Alert.AlertType.ERROR, "Arestas Duplicada", ButtonType.OK).showAndWait();
             else
             {
-                remove_seta(b2,b1);
-                seta = new Arrow(x1, y1, x2, y2,0,b1.getText(),b2.getText());
+                if(verifica_sentido(b1,b2))
+                    seta = new Arrow(x1, y1, x2, y2,b1.getText(),b2.getText());
+                else
+                {
+                    remove_seta(b2,b1);
+                    seta = new Arrow(x1, y1, x2, y2,0,b1.getText(),b2.getText());
+                    seta.setSeta(Boolean.FALSE);
+                }
+                arestas.add(new Aresta("", seta, new Label(b1.getText() + "-" + b2.getText())));
+
+                alteraCelula(b1,b2,seta);
+
+                atualiza_matriz_incidencia();
+
+                atualiza_tela(false);
+
+                atualiza_lista(seta);
+                tfCusto.clear();
             }
-            arestas.add(new Aresta("", seta, new Label(b1.getText() + "-" + b2.getText())));
-
-            alteraCelula(b1,b2,seta);
-            
-            atualiza_matriz_incidencia();
-
-            atualiza_tela(false);
-            
-            atualiza_lista(seta);
         }
         else
             new Alert(Alert.AlertType.ERROR, "Escolha um vertice", ButtonType.NO).showAndWait();
@@ -427,9 +447,10 @@ public class FXMLDocumentController implements Initializable
             TableColumn c = new TableColumn("(" + arestas.get(i).getLinha().getOrigem() + "," + 
                     arestas.get(i).getLinha().getDestino() + ")");
             c.setMaxWidth(35);
-            c.setCellValueFactory(new PropertyValueFactory("parametro0"));
             tv_mi.getColumns().add(c);
-            tv_mi.getItems().add(new Tabela("-"));
+            c.setCellValueFactory(new PropertyValueFactory<String, String>(""));
+            linhas.add("teste");
+            tv_mi.getItems().addAll(linhas);
         }
         
         
@@ -440,5 +461,21 @@ public class FXMLDocumentController implements Initializable
         HBox pane = (HBox)lista.get(Integer.parseInt(seta.getOrigem()));
         pane.getChildren().add(new Arrow(0, 0, 30, 0, null, null));
         pane.getChildren().add(new Button(seta.getDestino()));
+    }
+
+    private boolean verifica_aresta_duplicada(Button b1, Button b2) 
+    {
+        for (int i = 0; i < arestas.size(); i++) 
+            if(arestas.get(i).getLinha().getOrigem() == b1.getText()
+                    && arestas.get(i).getLinha().getDestino()== b2.getText())
+                return true;
+        for (int i = 0; i < arestas.size(); i++) 
+            if(!arestas.get(i).getLinha().isSeta())
+                if(arestas.get(i).getLinha().getDestino()== b1.getText()
+                    && arestas.get(i).getLinha().getOrigem()== b2.getText()
+                    || arestas.get(i).getLinha().getOrigem() == b1.getText()
+                    && arestas.get(i).getLinha().getDestino()== b2.getText())
+                    return true;
+        return false;
     }
 }

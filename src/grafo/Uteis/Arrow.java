@@ -23,12 +23,17 @@ public class Arrow extends Path
     private static final double defaultArrowHeadSize = 5.0;
     private String origem;
     private String destino;
+    private Boolean seta;
     
     public Arrow(double startX, double startY, double endX, double endY, double arrowHeadSize,String origem,String dest)
     {
         super();
         this.origem = origem;
         this.destino = dest;
+        if(arrowHeadSize == 0)
+            seta = false;
+        else
+            seta = true;
         strokeProperty().bind(fillProperty());
         setFill(Color.BLACK);
         
@@ -70,6 +75,16 @@ public class Arrow extends Path
     public double getDefaultArrowHeadSize()
     {
         return defaultArrowHeadSize;
+    }
+
+    public Boolean isSeta() 
+    {
+        return seta;
+    }
+
+    public void setSeta(Boolean seta) 
+    {
+        this.seta = seta;
     }
     
 }
