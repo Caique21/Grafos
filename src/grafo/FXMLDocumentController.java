@@ -83,6 +83,12 @@ public class FXMLDocumentController implements Initializable
     private Label lbRegularMA;
     @FXML
     private Label lbCompletoMA;
+    @FXML
+    private Label lbSimplesLista;
+    @FXML
+    private Label lbRegularLista;
+    @FXML
+    private Label lbCompletoLista;
    
     
     @Override
@@ -91,9 +97,15 @@ public class FXMLDocumentController implements Initializable
         vertices = new ArrayList<>();
         arestas = new ArrayList<>();
         lista = new ArrayList<>();
+        
         lbSimplesMA.setText("");
         lbRegularMA.setText("");
         lbCompletoMA.setText("");
+        
+        lbSimplesLista.setText("");
+        lbRegularLista.setText("");
+        lbCompletoLista.setText("");
+        
         TableColumn col = new TableColumn("Arestas");
         tv_mi.getColumns().add(col);
     }    
@@ -602,6 +614,32 @@ public class FXMLDocumentController implements Initializable
         } 
         else
             lbCompletoMA.setText("");
+        
+        
+        if(validacaoSimplesLista())
+        {
+            if(!lbSimplesLista.getText().contains("simples"))
+                lbSimplesLista.setText(lbSimplesLista.getText() + "- simples");
+        } 
+        else
+            lbSimplesLista.setText("");
+        
+        grau = "";
+        if(validacaoRegularLista(grau))
+        {
+            if(!lbRegularLista.getText().contains("regular"))
+                lbRegularLista.setText(lbRegularLista.getText() + "- regular: " + grau);
+        } 
+        else
+            lbRegularLista.setText("");
+        
+        if(validacaoCompletoLista())
+        {
+            if(!lbCompletoLista.getText().contains("completo"))
+                lbCompletoLista.setText(lbCompletoLista.getText() + "- completo: k" + paneLista.getChildren().size());
+        } 
+        else
+            lbCompletoLista.setText("");
     }
     
     ///////////////////////////////////// VALIDAÇÕES MATRIZ ADJACENTE /////////////////////////////////////
@@ -724,9 +762,71 @@ public class FXMLDocumentController implements Initializable
                 if(j != i)
                     if(!tv_ma.getItems().get(i).valida(j))
                         return false;
+                if(j == i)
+                    if(tv_ma.getItems().get(i).valida(j))
+                        return false;
             }
         }
         return true;
     }
     ///////////////////////////////////// VALIDAÇÕES MATRIZ ADJACENTE /////////////////////////////////////
+    
+    ///////////////////////////////////// LISTA /////////////////////////////////////
+    private boolean validacaoSimplesLista()
+    {
+        for (int i = 0; i < paneLista.getChildren().size(); i++)
+        {
+            HBox pane = (HBox)paneLista.getChildren().get(i);
+            Button vertice = (Button)pane.getChildren().get(0);
+            for (int j = 2; j < pane.getChildren().size(); j+=2)
+            {
+                Button aux = (Button)pane.getChildren().get(j);
+                if(aux.getText().equals(vertice.getText()))
+                    return false;
+            }
+        }
+        return true;
+    }
+    
+    private boolean validacaoRegularLista(String grau_retorno)
+    {
+        int grau = 0,aux = 0;
+        HBox pane = (HBox)paneLista.getChildren().get(0);
+        for (int i = 2; i < pane.getChildren().size(); i+=2)
+            grau++;
+        
+        for (int i = 1; i < paneLista.getChildren().size(); i++)
+        {
+            aux = 0;
+            pane = (HBox)paneLista.getChildren().get(i);
+            for (int j = 2; j < pane.getChildren().size(); j+=2)
+                aux++;
+            if(aux != grau)
+                return false;
+        }
+        grau_retorno = String.valueOf(grau);
+        return true;
+    }
+    
+    public boolean validacaoCompletoLista()
+    {
+        int contador = 0;
+        for (int i = 0; i < paneLista.getChildren().size(); i++)
+        {
+            contador = 0;
+            HBox pane = (HBox)paneLista.getChildren().get(i);
+            Button vertice = (Button)pane.getChildren().get(0);
+            for (int j = 2; j < pane.getChildren().size(); j+=2)
+            {
+                if(((Button)pane.getChildren().get(j)).getText() != vertice.getText())
+                    contador++;
+                else
+                    return false;
+            }
+            if(contador != paneLista.getChildren().size()-1)
+                return false;
+        }
+        return true;
+    }
+    ///////////////////////////////////// LISTA /////////////////////////////////////
 }

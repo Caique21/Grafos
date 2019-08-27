@@ -66,6 +66,9 @@
                   <Label fx:id="lbSimplesMA" layoutX="13.0" layoutY="254.0" text="simples" />
                   <Label fx:id="lbRegularMA" layoutX="13.0" layoutY="280.0" text="regular" />
                   <Label fx:id="lbCompletoMA" layoutX="13.0" layoutY="308.0" text="completo" />
+                  <Label fx:id="lbSimplesLista" layoutX="245.0" layoutY="254.0" text="simples" />
+                  <Label fx:id="lbRegularLista" layoutX="246.0" layoutY="280.0" text="regular" />
+                  <Label fx:id="lbCompletoLista" layoutX="248.0" layoutY="308.0" text="completo" />
                </children>
             </AnchorPane>
          </children>
