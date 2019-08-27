@@ -10,14 +10,12 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import grafo.Uteis.Aresta;
 import grafo.Uteis.Arrow;
+import grafo.Uteis.Incidencia;
 import grafo.Uteis.Tabela;
 import grafo.Uteis.Vertice;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -48,7 +46,6 @@ public class FXMLDocumentController implements Initializable
     private ArrayList<Aresta>arestas;
     private Arrow seta;
     private ArrayList<HBox>lista;
-    ObservableList<String> linhas = FXCollections.observableArrayList();
     
     @FXML
     private HBox paneTabelas;
@@ -65,7 +62,7 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TableView<Tabela> tv_ma;
     @FXML
-    private TableView<String> tv_mi;
+    private TableView<Incidencia> tv_mi;
     @FXML
     private VBox vb_vertices;
     @FXML
@@ -91,6 +88,8 @@ public class FXMLDocumentController implements Initializable
         lbCompleto.setText("");
         lbRegular.setText("");
         lbSimples.setText("");
+        TableColumn col = new TableColumn("Arestas");
+        tv_mi.getColumns().add(col);
     }    
 
     @FXML
@@ -129,6 +128,7 @@ public class FXMLDocumentController implements Initializable
             addLabel(aux);
                     
             vertices.add(new Vertice(aux));
+            inicializa_colunas_incidencia(aux);
             atualiza_tela(true);
         }
     }
@@ -282,7 +282,8 @@ public class FXMLDocumentController implements Initializable
 
                 alteraCelula(b1,b2,seta);
 
-                atualiza_matriz_incidencia();
+                atualiza_matriz_incidencia(seta);
+                
 
                 atualiza_tela(false);
 
@@ -438,22 +439,104 @@ public class FXMLDocumentController implements Initializable
         }
     }
 
-    private void atualiza_matriz_incidencia()
-    {//ta funcionando +-
+    private void inicializa_colunas_incidencia(Button aux)
+    {
+        //a matriz de incidencia fiz de outra forma. as linhas sao as arestas criadas, e as colunas são os vertices.
+        //dessa forma nao precisei fazer uma classe com 45 parametros que representam todas as possiveis arestas criadas
+        //inverti linha por coluna.
         tv_mi.getColumns().clear();
-        tv_mi.getItems().clear();
-        for (int i = 0; i < arestas.size(); i++)
-        {  
-            TableColumn c = new TableColumn("(" + arestas.get(i).getLinha().getOrigem() + "," + 
-                    arestas.get(i).getLinha().getDestino() + ")");
-            c.setMaxWidth(35);
+        TableColumn col = new TableColumn("Arestas");
+        col.setStyle("-fx-alignment: CENTER;");
+        col.setCellValueFactory(new PropertyValueFactory("parametro0"));
+        tv_mi.getColumns().add(col);
+        for (int i = 0; i < vertices.size(); i++)
+        {
+            TableColumn c = new TableColumn(vertices.get(i).getButton().getText());
+            int pos = Integer.parseInt(aux.getText())+1;
+            c.setCellValueFactory(new PropertyValueFactory("parametro" + pos));
+            c.setMaxWidth(42);
             tv_mi.getColumns().add(c);
-            c.setCellValueFactory(new PropertyValueFactory<String, String>(""));
-            linhas.add("teste");
-            tv_mi.getItems().addAll(linhas);
+        }
+    }    
+    
+    private void atualiza_matriz_incidencia(Arrow seta)
+    {
+        Incidencia i = new Incidencia("(" + seta.getOrigem() + "," + seta.getDestino() + ")");
+        altera_celula_incidencia(i, seta);
+        tv_mi.getItems().add(i);
+    }
+    
+    private void altera_celula_incidencia(Incidencia incidencia, Arrow seta)
+    {
+        if(tfCusto.getText().equals(""))
+            tfCusto.setText("1");
+        switch(Integer.parseInt(seta.getOrigem()))
+        {
+            case 0:
+                incidencia.setParametro1("-" + tfCusto.getText());
+                break;
+            case 1:
+                incidencia.setParametro2("-" + tfCusto.getText());
+                break;
+            case 2:
+                incidencia.setParametro3("-" + tfCusto.getText());
+                break;
+            case 3:
+                incidencia.setParametro4("-" + tfCusto.getText());
+                break;
+            case 4:
+                incidencia.setParametro5("-" + tfCusto.getText());
+                break;
+            case 5:
+                incidencia.setParametro6("-" + tfCusto.getText());
+                break;
+            case 6:
+                incidencia.setParametro7("-" + tfCusto.getText());
+                break;
+            case 7:
+                incidencia.setParametro8("-" + tfCusto.getText());
+                break;
+            case 8:
+                incidencia.setParametro9("-" + tfCusto.getText());
+                break;
+            case 9:
+                incidencia.setParametro10("-" + tfCusto.getText());
+                break;
         }
         
-        
+        switch(Integer.parseInt(seta.getDestino()))
+        {
+            case 0:
+                incidencia.setParametro1(tfCusto.getText());
+                break;
+            case 1:
+                incidencia.setParametro2(tfCusto.getText());
+                break;
+            case 2:
+                incidencia.setParametro3(tfCusto.getText());
+                break;
+            case 3:
+                incidencia.setParametro4(tfCusto.getText());
+                break;
+            case 4:
+                incidencia.setParametro5(tfCusto.getText());
+                break;
+            case 5:
+                incidencia.setParametro6(tfCusto.getText());
+                break;
+            case 6:
+                incidencia.setParametro7(tfCusto.getText());
+                break;
+            case 7:
+                incidencia.setParametro8(tfCusto.getText());
+                break;
+            case 8:
+                incidencia.setParametro9(tfCusto.getText());
+                break;
+            case 9:
+                incidencia.setParametro10(tfCusto.getText());
+                break;
+        }
     }
 
     private void atualiza_lista(Arrow seta)

@@ -8,44 +8,8 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Grafo.jar" size="14358" download="eager" />
-    <jar href="lib\jcl-over-slf4j-1.7.28-sources.jar" size="24691" download="eager" />
-    <jar href="lib\jcl-over-slf4j-1.7.28.jar" size="16461" download="eager" />
+    <jar href="Grafo.jar" size="15747" download="eager" />
     <jar href="lib\jfoenix-8.0.1.jar" size="2405715" download="eager" />
-    <jar href="lib\jul-to-slf4j-1.7.28-sources.jar" size="6173" download="eager" />
-    <jar href="lib\jul-to-slf4j-1.7.28.jar" size="4593" download="eager" />
-    <jar href="lib\junit-3.8.1.jar" size="121070" download="eager" />
-    <jar href="lib\log4j-over-slf4j-1.7.28-sources.jar" size="32717" download="eager" />
-    <jar href="lib\log4j-over-slf4j-1.7.28.jar" size="23703" download="eager" />
-    <jar href="lib\osgi-over-slf4j-1.7.28-sources.jar" size="7199" download="eager" />
-    <jar href="lib\osgi-over-slf4j-1.7.28.jar" size="5481" download="eager" />
-    <jar href="lib\slf4j-android-1.7.28-sources.jar" size="11163" download="eager" />
-    <jar href="lib\slf4j-android-1.7.28.jar" size="7346" download="eager" />
-    <jar href="lib\slf4j-api-1.5.11.jar" size="23671" download="eager" />
-    <jar href="lib\slf4j-api-1.6.6.jar" size="26176" download="eager" />
-    <jar href="lib\slf4j-api-1.6.99.jar" size="23757" download="eager" />
-    <jar href="lib\slf4j-api-1.7.28-sources.jar" size="58095" download="eager" />
-    <jar href="lib\slf4j-api-1.7.28.jar" size="41117" download="eager" />
-    <jar href="lib\slf4j-api-2.0.99.jar" size="23759" download="eager" />
-    <jar href="lib\slf4j-ext-1.7.28-sources.jar" size="40408" download="eager" />
-    <jar href="lib\slf4j-ext-1.7.28.jar" size="37967" download="eager" />
-    <jar href="lib\slf4j-jcl-1.7.28-sources.jar" size="9641" download="eager" />
-    <jar href="lib\slf4j-jcl-1.7.28.jar" size="6966" download="eager" />
-    <jar href="lib\slf4j-jdk14-1.7.28-sources.jar" size="11116" download="eager" />
-    <jar href="lib\slf4j-jdk14-1.7.28.jar" size="8510" download="eager" />
-    <jar href="lib\slf4j-log4j12-1.7.28-sources.jar" size="13939" download="eager" />
-    <jar href="lib\slf4j-log4j12-1.7.28.jar" size="12212" download="eager" />
-    <jar href="lib\slf4j-migrator-1.7.28.jar" size="28674" download="eager" />
-    <jar href="lib\slf4j-nop-1.5.6.jar" size="5165" download="eager" />
-    <jar href="lib\slf4j-nop-1.7.28-sources.jar" size="5759" download="eager" />
-    <jar href="lib\slf4j-nop-1.7.28.jar" size="4020" download="eager" />
-    <jar href="lib\slf4j-simple-1.4.2.jar" size="7470" download="eager" />
-    <jar href="lib\slf4j-simple-1.5.0.jar" size="7477" download="eager" />
-    <jar href="lib\slf4j-simple-1.5.11.jar" size="7600" download="eager" />
-    <jar href="lib\slf4j-simple-1.6.6.jar" size="10336" download="eager" />
-    <jar href="lib\slf4j-simple-1.6.99.jar" size="7602" download="eager" />
-    <jar href="lib\slf4j-simple-1.7.28-sources.jar" size="15200" download="eager" />
-    <jar href="lib\slf4j-simple-1.7.28.jar" size="15240" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Grafo" >
     <param name="requiredFXVersion" value="8.0+"/>
