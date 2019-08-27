@@ -719,7 +719,12 @@ public class FXMLDocumentController implements Initializable
     {
         for (int i = 0; i < tv_ma.getItems().size(); i++)
         {
-            
+            for (int j = 0; j < tv_ma.getColumns().size(); j++)
+            {
+                if(j != i)
+                    if(!tv_ma.getItems().get(i).valida(j))
+                        return false;
+            }
         }
         return true;
     }
