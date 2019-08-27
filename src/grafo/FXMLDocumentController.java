@@ -72,11 +72,17 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private JFXTextField tfCusto;
     @FXML
-    private Label lbSimples;
+    private Label lb_ma;
     @FXML
-    private Label lbRegular;
+    private Label lb_mi;
     @FXML
-    private Label lbCompleto;
+    private Label lb_lista;
+    @FXML
+    private Label lbSimplesMA;
+    @FXML
+    private Label lbRegularMA;
+    @FXML
+    private Label lbCompletoMA;
    
     
     @Override
@@ -85,9 +91,9 @@ public class FXMLDocumentController implements Initializable
         vertices = new ArrayList<>();
         arestas = new ArrayList<>();
         lista = new ArrayList<>();
-        lbCompleto.setText("");
-        lbRegular.setText("");
-        lbSimples.setText("");
+        lbSimplesMA.setText("");
+        lbRegularMA.setText("");
+        lbCompletoMA.setText("");
         TableColumn col = new TableColumn("Arestas");
         tv_mi.getColumns().add(col);
     }    
@@ -130,8 +136,61 @@ public class FXMLDocumentController implements Initializable
             vertices.add(new Vertice(aux));
             inicializa_colunas_incidencia(aux);
             atualiza_tela(true);
+            
         }
     }
+    
+    private void inicializaCelulas(Button aux)
+    {//meio cachorrada, mas funciona
+        ObservableList<Tabela>a = tv_ma.getItems();
+        if(a.isEmpty())
+            a.add(new Tabela("-"));
+        else
+            for (int i = 0; i < a.size(); i++)
+            {
+                if(tv_ma.getColumns().size() >= 1)
+                    a.get(i).setParametro0("-");
+                if(tv_ma.getColumns().size() >= 2)
+                    a.get(i).setParametro1("-");
+                if(tv_ma.getColumns().size() >= 3)
+                    a.get(i).setParametro2("-");
+                if(tv_ma.getColumns().size() >= 4)
+                    a.get(i).setParametro3("-");
+                if(tv_ma.getColumns().size() >= 5)
+                    a.get(i).setParametro4("-");
+                if(tv_ma.getColumns().size() >= 6)
+                    a.get(i).setParametro5("-");
+                if(tv_ma.getColumns().size() >= 7)
+                    a.get(i).setParametro6("-");
+                if(tv_ma.getColumns().size() >= 8)
+                    a.get(i).setParametro7("-");
+                if(tv_ma.getColumns().size() >= 9)
+                    a.get(i).setParametro8("-");
+                if(tv_ma.getColumns().size() >= 10)
+                    a.get(i).setParametro9("-");
+            }
+        tv_ma.setItems(a);
+    }
+    
+    private void inicializa_colunas_incidencia(Button aux)
+    {
+        //a matriz de incidencia fiz de outra forma. as linhas sao as arestas criadas, e as colunas são os vertices.
+        //dessa forma nao precisei fazer uma classe com 45 parametros que representam todas as possiveis arestas criadas
+        //inverti linha por coluna.
+        tv_mi.getColumns().clear();
+        TableColumn col = new TableColumn("Arestas");
+        col.setStyle("-fx-alignment: CENTER;");
+        col.setCellValueFactory(new PropertyValueFactory("parametro0"));
+        tv_mi.getColumns().add(col);
+        for (int i = 0; i < vertices.size(); i++)
+        {
+            TableColumn c = new TableColumn(vertices.get(i).getButton().getText());
+            int pos = Integer.parseInt(aux.getText())+1;
+            c.setCellValueFactory(new PropertyValueFactory("parametro" + pos));
+            c.setMaxWidth(42);
+            tv_mi.getColumns().add(c);
+        }
+    }    
     
     private Button busca(double x, double y)
     {
@@ -149,6 +208,13 @@ public class FXMLDocumentController implements Initializable
                 return vertices.get(i).getButton();
             }
         return null;
+    }
+    
+    private void addLabel(Button aux)
+    {//sao como os vertices sao exibidos no lado esquedo da tela
+        Label l = new Label(aux.getText());
+        l.setMaxHeight(40);
+        vb_vertices.getChildren().add(l);
     }
     
     private void evtButtonClicked(int numero)
@@ -283,12 +349,12 @@ public class FXMLDocumentController implements Initializable
                 alteraCelula(b1,b2,seta);
 
                 atualiza_matriz_incidencia(seta);
-                
 
                 atualiza_tela(false);
 
                 atualiza_lista(seta);
                 tfCusto.clear();
+                validar();
             }
         }
         else
@@ -300,45 +366,6 @@ public class FXMLDocumentController implements Initializable
     {
     }
 
-    private void addLabel(Button aux)
-    {//sao como os vertices sao exibidos no lado esquedo da tela
-        Label l = new Label(aux.getText());
-        l.setMaxHeight(40);
-        vb_vertices.getChildren().add(l);
-    }
-    
-    private void inicializaCelulas(Button aux)
-    {//meio cachorrada, mas funciona
-        ObservableList<Tabela>a = tv_ma.getItems();
-        if(a.isEmpty())
-            a.add(new Tabela("-"));
-        else
-            for (int i = 0; i < a.size(); i++)
-            {
-                if(tv_ma.getColumns().size() >= 1)
-                    a.get(i).setParametro0("-");
-                if(tv_ma.getColumns().size() >= 2)
-                    a.get(i).setParametro1("-");
-                if(tv_ma.getColumns().size() >= 3)
-                    a.get(i).setParametro2("-");
-                if(tv_ma.getColumns().size() >= 4)
-                    a.get(i).setParametro3("-");
-                if(tv_ma.getColumns().size() >= 5)
-                    a.get(i).setParametro4("-");
-                if(tv_ma.getColumns().size() >= 6)
-                    a.get(i).setParametro5("-");
-                if(tv_ma.getColumns().size() >= 7)
-                    a.get(i).setParametro6("-");
-                if(tv_ma.getColumns().size() >= 8)
-                    a.get(i).setParametro7("-");
-                if(tv_ma.getColumns().size() >= 9)
-                    a.get(i).setParametro8("-");
-                if(tv_ma.getColumns().size() >= 10)
-                    a.get(i).setParametro9("-");
-            }
-        tv_ma.setItems(a);
-    }
-    
     private void alteraCelula(Button b1,Button b2,Arrow seta)
     {//outra cachorrada
         ObservableList<Tabela>celulas = tv_ma.getItems();
@@ -439,31 +466,15 @@ public class FXMLDocumentController implements Initializable
         }
     }
 
-    private void inicializa_colunas_incidencia(Button aux)
-    {
-        //a matriz de incidencia fiz de outra forma. as linhas sao as arestas criadas, e as colunas são os vertices.
-        //dessa forma nao precisei fazer uma classe com 45 parametros que representam todas as possiveis arestas criadas
-        //inverti linha por coluna.
-        tv_mi.getColumns().clear();
-        TableColumn col = new TableColumn("Arestas");
-        col.setStyle("-fx-alignment: CENTER;");
-        col.setCellValueFactory(new PropertyValueFactory("parametro0"));
-        tv_mi.getColumns().add(col);
-        for (int i = 0; i < vertices.size(); i++)
-        {
-            TableColumn c = new TableColumn(vertices.get(i).getButton().getText());
-            int pos = Integer.parseInt(aux.getText())+1;
-            c.setCellValueFactory(new PropertyValueFactory("parametro" + pos));
-            c.setMaxWidth(42);
-            tv_mi.getColumns().add(c);
-        }
-    }    
     
     private void atualiza_matriz_incidencia(Arrow seta)
     {
         Incidencia i = new Incidencia("(" + seta.getOrigem() + "," + seta.getDestino() + ")");
         altera_celula_incidencia(i, seta);
-        tv_mi.getItems().add(i);
+        ObservableList<Incidencia> aux = tv_mi.getItems();
+        aux.add(i);
+        tv_mi.setItems(aux);
+        tv_mi.refresh();
     }
     
     private void altera_celula_incidencia(Incidencia incidencia, Arrow seta)
@@ -540,7 +551,7 @@ public class FXMLDocumentController implements Initializable
     }
 
     private void atualiza_lista(Arrow seta)
-    {//Nao funciona
+    {
         HBox pane = (HBox)lista.get(Integer.parseInt(seta.getOrigem()));
         pane.getChildren().add(new Arrow(0, 0, 30, 0, null, null));
         pane.getChildren().add(new Button(seta.getDestino()));
@@ -561,4 +572,156 @@ public class FXMLDocumentController implements Initializable
                     return true;
         return false;
     }
+    
+    
+    public void validar()
+    {
+        if(validacaoSimplesMA())
+        {
+            if(!lbSimplesMA.getText().contains("simples"))
+                lbSimplesMA.setText(lbSimplesMA.getText() + "- simples");
+        } 
+        else
+            lbSimplesMA.setText("");
+        
+        String grau = "";
+        if(validacaoRegularMA(grau))
+        {
+            if(!lbRegularMA.getText().contains("regular"))
+                lbRegularMA.setText("- regular: " + grau);
+        }
+        else
+            lbRegularMA.setText("");
+        
+        if(validacaoCompletoMA())
+        {
+            if(!lbCompletoMA.getText().contains("completo"))
+            {
+                lbCompletoMA.setText(lbCompletoMA.getText() + "- completo: k" + tv_ma.getItems().size());
+            }
+        } 
+        else
+            lbCompletoMA.setText("");
+    }
+    
+    ///////////////////////////////////// VALIDAÇÕES MATRIZ ADJACENTE /////////////////////////////////////
+    private boolean validacaoSimplesMA()
+    {
+        for (int i = 0; i < tv_ma.getColumns().size() - 1; i++)
+            for (int j = i + 1; j < tv_ma.getColumns().size(); j++)
+                if(tv_ma.getColumns().get(i).getText().equals(tv_ma.getColumns().get(j).getText()))
+                    return false;
+        ObservableList<Tabela>rows = tv_ma.getItems();
+        for (int i = 0; i < tv_ma.getColumns().size(); i++)
+            switch(i)
+            {
+                case 0:
+                    if(!rows.get(i).getParametro0().equals("-"))
+                        return false;
+                    break;
+                case 1:
+                    if(!rows.get(i).getParametro1().equals("-"))
+                        return false;
+                    break;
+                case 2:
+                    if(!rows.get(i).getParametro2().equals("-"))
+                        return false;
+                    break;
+                case 3:
+                    if(!rows.get(i).getParametro3().equals("-"))
+                        return false;
+                    break;
+                case 4:
+                    if(!rows.get(i).getParametro4().equals("-"))
+                        return false;
+                    break;
+                case 5:
+                    if(!rows.get(i).getParametro5().equals("-"))
+                        return false;
+                    break;
+                case 6:
+                    if(!rows.get(i).getParametro6().equals("-"))
+                        return false;
+                    break;
+                case 7:
+                    if(!rows.get(i).getParametro7().equals("-"))
+                        return false;
+                    break;
+                case 8:
+                    if(!rows.get(i).getParametro8().equals("-"))
+                        return false;
+                    break;
+                case 9:
+                    if(!rows.get(i).getParametro9().equals("-"))
+                        return false;
+                    break;
+            }
+        return true;
+    }
+    
+    private boolean validacaoRegularMA(String grau_retorno)
+    {
+        int grau = 0,aux;
+        
+        if(tv_ma.getItems().get(0).getParametro0() != null && !tv_ma.getItems().get(0).getParametro0().equals("-"))
+            grau++;
+        if(tv_ma.getItems().get(0).getParametro1() != null && !tv_ma.getItems().get(0).getParametro1().equals("-"))
+            grau++;
+        if(tv_ma.getItems().get(0).getParametro2() != null && !tv_ma.getItems().get(0).getParametro2().equals("-"))
+            grau++;
+        if(tv_ma.getItems().get(0).getParametro3() != null && !tv_ma.getItems().get(0).getParametro3().equals("-"))
+            grau++;
+        if(tv_ma.getItems().get(0).getParametro4() != null && !tv_ma.getItems().get(0).getParametro4().equals("-"))
+            grau++;
+        if(tv_ma.getItems().get(0).getParametro5() != null && !tv_ma.getItems().get(0).getParametro5().equals("-"))
+            grau++;
+        if(tv_ma.getItems().get(0).getParametro6() != null && !tv_ma.getItems().get(0).getParametro6().equals("-"))
+            grau++;
+        if(tv_ma.getItems().get(0).getParametro7() != null && !tv_ma.getItems().get(0).getParametro7().equals("-"))
+            grau++;
+        if(tv_ma.getItems().get(0).getParametro8() != null && !tv_ma.getItems().get(0).getParametro8().equals("-"))
+            grau++;
+        if(tv_ma.getItems().get(0).getParametro9() != null && !tv_ma.getItems().get(0).getParametro9().equals("-"))
+            grau++;
+        
+        for (int i = 1; i < tv_ma.getItems().size(); i++)
+        {
+            aux = 0;
+            if(tv_ma.getItems().get(i).getParametro0() != null && !tv_ma.getItems().get(i).getParametro0().equals("-"))
+                aux++;
+            if(tv_ma.getItems().get(i).getParametro1() != null && !tv_ma.getItems().get(i).getParametro1().equals("-"))
+                aux++;
+            if(tv_ma.getItems().get(i).getParametro2() != null && !tv_ma.getItems().get(i).getParametro2().equals("-"))
+                aux++;
+            if(tv_ma.getItems().get(i).getParametro3() != null && !tv_ma.getItems().get(i).getParametro3().equals("-"))
+                aux++;
+            if(tv_ma.getItems().get(i).getParametro4() != null && !tv_ma.getItems().get(i).getParametro4().equals("-"))
+                aux++;
+            if(tv_ma.getItems().get(i).getParametro5() != null && !tv_ma.getItems().get(i).getParametro5().equals("-"))
+                aux++;
+            if(tv_ma.getItems().get(i).getParametro6() != null && !tv_ma.getItems().get(i).getParametro6().equals("-"))
+                aux++;
+            if(tv_ma.getItems().get(i).getParametro7() != null && !tv_ma.getItems().get(i).getParametro7().equals("-"))
+                aux++;
+            if(tv_ma.getItems().get(i).getParametro8() != null && !tv_ma.getItems().get(i).getParametro8().equals("-"))
+                aux++;
+            if(tv_ma.getItems().get(i).getParametro9() != null && !tv_ma.getItems().get(i).getParametro9().equals("-"))
+                aux++;
+            
+            if(aux != grau)
+                return false;
+        }
+        grau_retorno = String.valueOf(grau);
+        return true;
+    }
+    
+    public boolean validacaoCompletoMA()
+    {
+        for (int i = 0; i < tv_ma.getItems().size(); i++)
+        {
+            
+        }
+        return true;
+    }
+    ///////////////////////////////////// VALIDAÇÕES MATRIZ ADJACENTE /////////////////////////////////////
 }

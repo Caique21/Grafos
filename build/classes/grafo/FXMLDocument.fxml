@@ -23,19 +23,23 @@
                   </VBox>
                   <VBox prefHeight="283.0" prefWidth="380.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="386.0" text="Matriz Adjacente" />
+                        <HBox prefHeight="16.0" prefWidth="362.0" spacing="5.0">
+                           <children>
+                              <Label fx:id="lb_ma" alignment="CENTER" prefHeight="17.0" prefWidth="363.0" text="Matriz Adjacente" />
+                           </children>
+                        </HBox>
                         <TableView fx:id="tv_ma" prefHeight="277.0" prefWidth="279.0" />
                      </children>
                   </VBox>
                   <VBox prefHeight="283.0" prefWidth="525.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="529.0" text="Matriz de Incidencia" />
+                        <Label fx:id="lb_mi" alignment="CENTER" prefHeight="17.0" prefWidth="529.0" text="Matriz de Incidencia" />
                         <TableView fx:id="tv_mi" prefHeight="291.0" prefWidth="437.0" />
                      </children>
                   </VBox>
                   <VBox prefHeight="283.0" prefWidth="362.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="392.0" text="Lista" />
+                        <Label fx:id="lb_lista" alignment="CENTER" prefHeight="17.0" prefWidth="392.0" text="Lista" />
                         <VBox fx:id="paneLista" prefHeight="295.0" prefWidth="337.0" spacing="5.0" />
                      </children>
                   </VBox>
@@ -55,9 +59,13 @@
                   <JFXButton fx:id="btCriar" layoutX="95.0" layoutY="147.0" onAction="#clickCriar" text="Criar" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="147.0" />
                   <JFXButton fx:id="btRemover" layoutX="159.0" layoutY="147.0" onAction="#clickRemover" text="Remover" />
                   <JFXTextField fx:id="tfCusto" labelFloat="true" layoutX="110.0" layoutY="99.0" prefHeight="25.0" prefWidth="79.0" promptText="Custo" />
-                  <Label fx:id="lbSimples" layoutX="39.0" layoutY="215.0" prefHeight="22.0" prefWidth="78.0" text="simples" />
-                  <Label fx:id="lbRegular" layoutX="39.0" layoutY="246.0" prefHeight="22.0" prefWidth="78.0" text="regular" />
-                  <Label fx:id="lbCompleto" layoutX="39.0" layoutY="277.0" prefHeight="22.0" prefWidth="78.0" text="completo" />
+                  <Label alignment="CENTER" layoutY="196.0" prefHeight="31.0" prefWidth="321.0" text="Classificação:" />
+                  <Label layoutX="13.0" layoutY="227.0" text="Matriz Adjacente" />
+                  <Label layoutX="126.0" layoutY="227.0" text="Matriz Incidencia" />
+                  <Label layoutX="245.0" layoutY="227.0" prefHeight="17.0" prefWidth="72.0" text="Lista" />
+                  <Label fx:id="lbSimplesMA" layoutX="13.0" layoutY="254.0" text="simples" />
+                  <Label fx:id="lbRegularMA" layoutX="13.0" layoutY="280.0" text="regular" />
+                  <Label fx:id="lbCompletoMA" layoutX="13.0" layoutY="308.0" text="completo" />
                </children>
             </AnchorPane>
          </children>

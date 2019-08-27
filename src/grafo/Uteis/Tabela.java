@@ -130,4 +130,52 @@ public class Tabela
     {
         this.parametro9 = parametro9;
     }
+    
+    public boolean valida(int i)
+    {
+        switch(i)
+        {
+            case 0:
+                if(parametro0 != null && parametro0.equals("-"))
+                    return false;
+                break;
+            case 1:
+                if(parametro1 != null && parametro1.equals("-"))
+                    return false;
+                break;
+            case 2:
+                if(parametro2 != null && parametro2.equals("-"))
+                    return false;
+                break;
+            case 3:
+                if(parametro3 != null && parametro3.equals("-"))
+                    return false;
+                break;
+            case 4:
+                if(parametro4 != null && parametro4.equals("-"))
+                    return false;
+                break;
+            case 5:
+                if(parametro5 != null && parametro5.equals("-"))
+                    return false;
+                break;
+            case 6:
+                if(parametro6 != null && parametro6.equals("-"))
+                    return false;
+                break;
+            case 7:
+                if(parametro7 != null && parametro7.equals("-"))
+                    return false;
+                break;
+            case 8:
+                if(parametro8 != null && parametro8.equals("-"))
+                    return false;
+                break;
+            case 9:
+                if(parametro9 != null && parametro9.equals("-"))
+                    return false;
+                break;
+        }
+        return true;
+    }
 }
