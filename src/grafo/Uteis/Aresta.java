@@ -14,7 +14,7 @@ import javafx.scene.shape.Line;
  */
 public class Aresta
 {
-    private String caracter;
+    private String custo;
     private Arrow linha;
     private Label label;
 
@@ -24,18 +24,18 @@ public class Aresta
 
     public Aresta(String caracter, Arrow linha, Label label)
     {
-        this.caracter = caracter;
+        this.custo = caracter;
         this.linha = linha;
         this.label = label;
     }
-    public String getCaracter()
+    public String getCusto()
     {
-        return caracter;
+        return custo;
     }
 
-    public void setCaracter(String caracter)
+    public void setCusto(String caracter)
     {
-        this.caracter = caracter;
+        this.custo = caracter;
     }
 
     public Arrow getLinha()

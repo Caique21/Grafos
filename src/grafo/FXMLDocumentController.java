@@ -16,6 +16,7 @@ import grafo.Uteis.Vertice;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -89,7 +90,7 @@ public class FXMLDocumentController implements Initializable
     private Label lbRegularLista;
     @FXML
     private Label lbCompletoLista;
-   
+    ArrayList<Label> list_label;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -108,6 +109,7 @@ public class FXMLDocumentController implements Initializable
         
         TableColumn col = new TableColumn("Arestas");
         tv_mi.getColumns().add(col);
+        list_label = new ArrayList<>();
     }    
 
     @FXML
@@ -263,6 +265,10 @@ public class FXMLDocumentController implements Initializable
         for (int i = 0; i < arestas.size(); i++)
             paneGrafico.getChildren().add(arestas.get(i).getLinha());
         
+        
+        for (int i = 0; i < list_label.size(); i++) {
+            paneGrafico.getChildren().add(list_label.get(i));
+        }
         //a lista funciona como um hbox dentro de um vbox, assim toda vez que um vertice é criado
         //um novo hbox é criado pra ele. qnd uma aresta é criada, os componentes (Arrow e Button) sao inseridos 
         //no hbox. Era pra estar funcionando, mas nao ta
@@ -352,11 +358,26 @@ public class FXMLDocumentController implements Initializable
                     seta = new Arrow(x1, y1, x2, y2,b1.getText(),b2.getText());
                 else
                 {
-                    remove_seta(b2,b1);
-                    seta = new Arrow(x1, y1, x2, y2,0,b1.getText(),b2.getText());
-                    seta.setSeta(Boolean.FALSE);
+                    if(verifica_custo(b1, b2))
+                    {
+                        remove_seta(b2,b1);
+                        seta = new Arrow(x1, y1, x2, y2,0,b1.getText(),b2.getText());
+                        seta.setSeta(Boolean.FALSE);
+                    }
+                    else
+                    {
+                        new Alert(Alert.AlertType.ERROR, "Custo incorreto", ButtonType.OK).showAndWait();
+                        return;
+                    }
+                        
                 }
-                arestas.add(new Aresta("", seta, new Label(b1.getText() + "-" + b2.getText())));
+                Label lbl = new Label(tfCusto.getText());
+                double posx = (b1.getLayoutX() + b2.getLayoutX()) / 2 - 5;
+                double posy = (b1.getLayoutY() + b2.getLayoutY()) / 2 + 5;
+                lbl.setLayoutX(posx);
+                lbl.setLayoutY(posy);
+                list_label.add(lbl);
+                arestas.add(new Aresta(tfCusto.getText(), seta, lbl));
 
                 alteraCelula(b1,b2,seta);
 
@@ -467,6 +488,16 @@ public class FXMLDocumentController implements Initializable
                 return false;
         return true;
     }
+    
+    private boolean verifica_custo(Button b1,Button b2)
+    {
+        for (int i = 0; i < arestas.size(); i++)
+            if(arestas.get(i).getLinha().getOrigem() == b2.getText() && 
+                    arestas.get(i).getLinha().getDestino()== b1.getText())
+                if(arestas.get(i).getCusto().equals(tfCusto.getText()))
+                    return true;
+        return false;
+    }
 
     private void remove_seta(Button b2, Button b1)
     {
@@ -486,7 +517,6 @@ public class FXMLDocumentController implements Initializable
         ObservableList<Incidencia> aux = tv_mi.getItems();
         aux.add(i);
         tv_mi.setItems(aux);
-        tv_mi.refresh();
     }
     
     private void altera_celula_incidencia(Incidencia incidencia, Arrow seta)

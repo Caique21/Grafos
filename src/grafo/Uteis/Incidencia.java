@@ -41,8 +41,6 @@ public class Incidencia
         this.parametro9 = parametro9;
         this.parametro10 = paramento10;
     }
-    
-    
 
     public String getParametro0()
     {
