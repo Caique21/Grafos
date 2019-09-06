@@ -4,46 +4,109 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="grafo.FXMLDocumentController">
    <bottom>
       <AnchorPane prefHeight="310.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox fx:id="paneTabelas" layoutX="-5.0" layoutY="-1.0" prefHeight="312.0" prefWidth="1281.0" spacing="5.0">
-               <children>
-                  <VBox fx:id="vb_vertices" alignment="TOP_CENTER" prefHeight="312.0" prefWidth="71.0" spacing="6.0">
-                     <children>
-                        <Label fx:id="lb_vertices" alignment="CENTER" prefHeight="43.0" prefWidth="70.0" text="Vertices" />
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="283.0" prefWidth="380.0">
-                     <children>
-                        <HBox prefHeight="16.0" prefWidth="362.0" spacing="5.0">
+            <TabPane prefHeight="341.0" prefWidth="1289.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Classificação">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="lb_ma" alignment="CENTER" prefHeight="17.0" prefWidth="363.0" text="Matriz Adjacente" />
+                              <HBox fx:id="paneTabelas" prefHeight="312.0" prefWidth="1281.0" spacing="5.0">
+                                 <children>
+                                    <VBox fx:id="vb_vertices" alignment="TOP_CENTER" prefHeight="312.0" prefWidth="71.0" spacing="6.0">
+                                       <children>
+                                          <Label fx:id="lb_vertices" alignment="CENTER" prefHeight="43.0" prefWidth="70.0" text="Vertices" />
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="283.0" prefWidth="380.0">
+                                       <children>
+                                          <HBox prefHeight="16.0" prefWidth="362.0" spacing="5.0">
+                                             <children>
+                                                <Label fx:id="lb_ma" alignment="CENTER" prefHeight="17.0" prefWidth="363.0" text="Matriz Adjacente" />
+                                             </children>
+                                          </HBox>
+                                          <TableView fx:id="tv_ma" prefHeight="277.0" prefWidth="279.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="283.0" prefWidth="525.0">
+                                       <children>
+                                          <Label fx:id="lb_mi" alignment="CENTER" prefHeight="17.0" prefWidth="529.0" text="Matriz de Incidencia" />
+                                          <TableView fx:id="tv_mi" prefHeight="291.0" prefWidth="437.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="283.0" prefWidth="362.0">
+                                       <children>
+                                          <Label fx:id="lb_lista" alignment="CENTER" prefHeight="17.0" prefWidth="392.0" text="Lista" />
+                                          <VBox fx:id="paneLista" prefHeight="295.0" prefWidth="337.0" spacing="5.0" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
                            </children>
-                        </HBox>
-                        <TableView fx:id="tv_ma" prefHeight="277.0" prefWidth="279.0" />
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="283.0" prefWidth="525.0">
-                     <children>
-                        <Label fx:id="lb_mi" alignment="CENTER" prefHeight="17.0" prefWidth="529.0" text="Matriz de Incidencia" />
-                        <TableView fx:id="tv_mi" prefHeight="291.0" prefWidth="437.0" />
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="283.0" prefWidth="362.0">
-                     <children>
-                        <Label fx:id="lb_lista" alignment="CENTER" prefHeight="17.0" prefWidth="392.0" text="Lista" />
-                        <VBox fx:id="paneLista" prefHeight="295.0" prefWidth="337.0" spacing="5.0" />
-                     </children>
-                  </VBox>
-               </children></HBox>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Coloração">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <HBox prefHeight="312.0" prefWidth="1287.0" spacing="10.0">
+                                 <children>
+                                    <VBox prefHeight="312.0" prefWidth="357.0">
+                                       <children>
+                                          <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="358.0" text="Estrutura Vértice de Corte">
+                                             <font>
+                                                <Font name="System Bold" size="13.0" />
+                                             </font>
+                                          </Label>
+                                          <TableView fx:id="tvVerticeCorte" prefHeight="298.0" prefWidth="357.0">
+                                            <columns>
+                                              <TableColumn fx:id="tcVertice" prefWidth="60.999969482421875" text="Vértice" />
+                                              <TableColumn fx:id="tcPreNum" prefWidth="62.0" text="PréNum" />
+                                                <TableColumn fx:id="tcLigalter" prefWidth="93.0" text="Lig Alternativa" />
+                                                <TableColumn fx:id="tcMenorFilho" prefWidth="77.0" text="Menor Filho" />
+                                                <TableColumn fx:id="tcMenor" prefWidth="63.0" text="Menor" />
+                                            </columns>
+                                          </TableView>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="283.0" prefWidth="362.0">
+                                       <children>
+                                          <Label fx:id="lb_lista1" alignment="CENTER" prefHeight="17.0" prefWidth="392.0" text="Lista" />
+                                          <VBox fx:id="paneListaCores" prefHeight="295.0" prefWidth="337.0" spacing="5.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="312.0" prefWidth="553.0">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="555.0" text="Tabela de Cores">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TableView fx:id="tv_Cores" prefHeight="291.0" prefWidth="552.0" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
          </children>
       </AnchorPane>
    </bottom>

@@ -11,12 +11,12 @@ import com.jfoenix.controls.JFXTextField;
 import grafo.Uteis.Aresta;
 import grafo.Uteis.Arrow;
 import grafo.Uteis.Incidencia;
+import grafo.Uteis.PontoArticulacao;
 import grafo.Uteis.Tabela;
 import grafo.Uteis.Vertice;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -47,6 +47,7 @@ public class FXMLDocumentController implements Initializable
     private ArrayList<Aresta>arestas;
     private Arrow seta;
     private ArrayList<HBox>lista;
+    ArrayList<Label> list_label;
     
     @FXML
     private HBox paneTabelas;
@@ -90,7 +91,24 @@ public class FXMLDocumentController implements Initializable
     private Label lbRegularLista;
     @FXML
     private Label lbCompletoLista;
-    ArrayList<Label> list_label;
+    @FXML
+    private TableView<PontoArticulacao> tvVerticeCorte;
+    @FXML
+    private TableColumn<String, String> tcVertice;
+    @FXML
+    private TableColumn<Integer, Integer> tcPreNum;
+    @FXML
+    private TableColumn<String, String> tcLigalter;
+    @FXML
+    private TableColumn<Integer, Integer> tcMenorFilho;
+    @FXML
+    private TableColumn<Integer, Integer> tcMenor;
+    @FXML
+    private Label lb_lista1;
+    @FXML
+    private VBox paneListaCores;
+    @FXML
+    private TableView<Tabela> tv_Cores;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -285,6 +303,18 @@ public class FXMLDocumentController implements Initializable
                 pane.getChildren().add(new Button(vertices.get(i).getButton().getText()));
                 paneLista.getChildren().add(pane);
                 lista.add(pane);
+            }
+            
+            paneListaCores.getChildren().clear();
+            //paneListaCores.getChildren().addAll(paneLista.getChildren());
+            for (int i = 0; i < vertices.size(); i++)
+            {
+                HBox pane = new HBox();
+                pane.setPrefWidth(350);
+                pane.setAlignment(Pos.CENTER_LEFT);
+                pane.setId(String.valueOf(i));
+                pane.getChildren().add(new Button(vertices.get(i).getButton().getText()));
+                paneListaCores.getChildren().add(pane);
             }
         }
     }
@@ -597,6 +627,10 @@ public class FXMLDocumentController implements Initializable
         HBox pane = (HBox)lista.get(Integer.parseInt(seta.getOrigem()));
         pane.getChildren().add(new Arrow(0, 0, 30, 0, null, null));
         pane.getChildren().add(new Button(seta.getDestino()));
+        
+        HBox pane2 = (HBox)paneListaCores.getChildren().get(Integer.parseInt(seta.getOrigem()));
+        pane2.getChildren().add(new Arrow(0, 0, 30, 0, null, null));
+        pane2.getChildren().add(new Button(seta.getDestino()));
     }
 
     private boolean verifica_aresta_duplicada(Button b1, Button b2) 
