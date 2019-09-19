@@ -10,13 +10,19 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import grafo.Uteis.Aresta;
 import grafo.Uteis.Arrow;
+import grafo.Uteis.Arvore.NArea;
+import grafo.Uteis.Buscas.Lista;
+import grafo.Uteis.Buscas.Profundidade;
 import grafo.Uteis.Incidencia;
 import grafo.Uteis.PontoArticulacao;
 import grafo.Uteis.Tabela;
 import grafo.Uteis.Vertice;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.ResourceBundle;
+import java.util.Stack;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -48,6 +54,10 @@ public class FXMLDocumentController implements Initializable
     private Arrow seta;
     private ArrayList<HBox>lista;
     ArrayList<Label> list_label;
+    private Stack<String> pilha;
+    private Queue<String> fila;
+    private Lista[] listaVertices;
+    private NArea tree;
     
     @FXML
     private HBox paneTabelas;
@@ -109,6 +119,8 @@ public class FXMLDocumentController implements Initializable
     private VBox paneListaCores;
     @FXML
     private TableView<Tabela> tv_Cores;
+    @FXML
+    private JFXButton btColorir;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -128,6 +140,15 @@ public class FXMLDocumentController implements Initializable
         TableColumn col = new TableColumn("Arestas");
         tv_mi.getColumns().add(col);
         list_label = new ArrayList<>();
+        
+        pilha = new Stack();
+        fila = new LinkedList<>();
+        
+        tcVertice.setCellValueFactory(new PropertyValueFactory("vertice"));
+        tcPreNum.setCellValueFactory(new PropertyValueFactory("prenum"));
+        tcLigalter.setCellValueFactory(new PropertyValueFactory("ligAlte"));
+        tcMenorFilho.setCellValueFactory(new PropertyValueFactory("menorFilho"));
+        tcMenor.setCellValueFactory(new PropertyValueFactory("menor"));
     }    
 
     @FXML
@@ -169,6 +190,7 @@ public class FXMLDocumentController implements Initializable
             inicializa_colunas_incidencia(aux);
             atualiza_tela(true);
             
+            insereVerticePontoArticulacao(aux.getText());
         }
     }
     
@@ -892,5 +914,82 @@ public class FXMLDocumentController implements Initializable
         }
         return true;
     }
+    
+    public void transforma()
+    {
+        /*ArrayList<Aresta> auxA = arestas;
+        listaVertices = new Lista[vertices.size()];
+        
+        for (int i = 0; i < vertices.size(); i++) 
+        {
+            ArrayList<Aresta> auxA2 = new ArrayList<>();
+            listaVertices[i] = new Lista();
+            
+            for (int j = 0; j < auxA.size(); j++) 
+                if(auxA.get(j).getLinha().getOrigem() == vertices.get(i).getButton().getText())
+                {
+                    auxA2.add(auxA.get(j));
+                }
+                else if(auxA.get(j).getLinha().getDestino() == vertices.get(i).getButton().getText() && !auxA.get(j).getLinha().isSeta())
+                {
+                    Aresta a = new Aresta();
+                    Arrow ar = new Arrow(j, j, j, j, auxA.get(j).getLinha().getDestino(), auxA.get(j).getLinha().getOrigem());
+                    a.setLinha(ar);
+                    auxA2.add(a);
+                }
+                    
+            
+            
+            for (int j = 0; j < auxA2.size(); j++) 
+            {
+                int a = Integer.parseInt(auxA2.get(j).getLinha().getDestino());
+                listaVertices[i].insere(a);
+            }
+                
+            
+        }*/
+    }
     ///////////////////////////////////// LISTA /////////////////////////////////////
+
+    @FXML
+    private void clickColorir(ActionEvent event) 
+    {
+        tree = new NArea();
+        ObservableList<PontoArticulacao> pa = tvVerticeCorte.getItems();
+        Profundidade p = new Profundidade(vertices.size());
+        criaArvore();
+        p.busca(pa, tree.getRaiz(), 0);
+        tree.in_ordem(tree.getRaiz());
+        pa.get(0);
+    }
+
+    private void insereVerticePontoArticulacao(String vertice) 
+    {
+        PontoArticulacao p = new PontoArticulacao(vertice);
+        
+        tvVerticeCorte.getItems().add(p);
+    }
+    
+    public void criaArvore()
+    {
+        for (int i = 0; i < vertices.size(); i++) 
+        {
+            ArrayList<Aresta> aux = new ArrayList<>();
+            for (int j = 0; j < arestas.size(); j++) 
+            {
+                if(arestas.get(j).getLinha().getOrigem() == vertices.get(i).getButton().getText())
+                    aux.add(arestas.get(j));
+                if(!arestas.get(j).getLinha().isSeta() && arestas.get(j).getLinha().getDestino() == vertices.get(i).getButton().getText())
+                {
+                    Aresta a1 = new Aresta();
+                    Arrow a2 = new Arrow(j, j, j, j, arestas.get(j).getLinha().getDestino(), arestas.get(j).getLinha().getOrigem());
+                    a1.setLinha(a2);
+                    aux.add(a1);
+                }
+            }
+            
+            tree.inserir(Integer.parseInt(vertices.get(i).getButton().getText()), aux.size());
+            
+        }
+    }
 }

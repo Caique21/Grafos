@@ -119,8 +119,8 @@
                   <JFXComboBox fx:id="cbVertice1" layoutX="27.0" layoutY="60.0" promptText="Vertice" />
                   <JFXComboBox fx:id="cbVertice2" layoutX="194.0" layoutY="60.0" promptText="Vertice" />
                   <Label layoutX="140.0" layoutY="64.0" text="Até" />
-                  <JFXButton fx:id="btCriar" layoutX="95.0" layoutY="147.0" onAction="#clickCriar" text="Criar" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="147.0" />
-                  <JFXButton fx:id="btRemover" layoutX="159.0" layoutY="147.0" onAction="#clickRemover" text="Remover" />
+                  <JFXButton fx:id="btCriar" layoutX="46.0" layoutY="147.0" onAction="#clickCriar" text="Criar" AnchorPane.leftAnchor="46.0" AnchorPane.topAnchor="147.0" />
+                  <JFXButton fx:id="btRemover" layoutX="118.0" layoutY="147.0" onAction="#clickRemover" text="Remover" />
                   <JFXTextField fx:id="tfCusto" labelFloat="true" layoutX="110.0" layoutY="99.0" prefHeight="25.0" prefWidth="79.0" promptText="Custo" />
                   <Label alignment="CENTER" layoutY="196.0" prefHeight="31.0" prefWidth="321.0" text="Classificação:" />
                   <Label layoutX="13.0" layoutY="227.0" text="Matriz Adjacente" />
@@ -132,6 +132,7 @@
                   <Label fx:id="lbSimplesLista" layoutX="245.0" layoutY="254.0" text="simples" />
                   <Label fx:id="lbRegularLista" layoutX="246.0" layoutY="280.0" text="regular" />
                   <Label fx:id="lbCompletoLista" layoutX="248.0" layoutY="308.0" text="completo" />
+                  <JFXButton fx:id="btColorir" layoutX="208.0" layoutY="147.0" onAction="#clickColorir" text="Colorir" />
                </children>
             </AnchorPane>
          </children>
