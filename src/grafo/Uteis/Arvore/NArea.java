@@ -107,7 +107,7 @@ public class NArea
             {
                 for (int i = 0; i < r.getN(); i++) 
                     if(find(r.getVLig(i), parseInt) != null)
-                        return r.getVLig(i);
+                        return find(r.getVLig(i), parseInt);
             }
         }
         return null;
@@ -150,7 +150,7 @@ public class NArea
         {
             if(r == raiz && r.getN() > 1)
                 nos.add(r);
-            else
+            else if(r != raiz)
             {
                 if(r.getMenorFilho() != 0)
                     nos.add(r);

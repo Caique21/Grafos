@@ -963,7 +963,14 @@ public class FXMLDocumentController implements Initializable
                     Aresta a1 = new Aresta();
                     Arrow a2 = new Arrow(j, j, j, j, arestas.get(j).getLinha().getDestino(), arestas.get(j).getLinha().getOrigem());
                     a1.setLinha(a2);
-                    aux.add(a1);
+                    boolean flag = true;
+                    for (int k = 0; k < aux.size() && flag; k++) 
+                    {
+                        if(aux.get(k).getLinha().getOrigem() == a2.getOrigem())
+                            flag = false;
+                    }
+                    if(flag)
+                        aux.add(a1);
                 }
             }
             
