@@ -21,6 +21,7 @@ import grafo.Uteis.Vertice;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.ResourceBundle;
 import java.util.Stack;
@@ -55,10 +56,8 @@ public class FXMLDocumentController implements Initializable
     private Arrow seta;
     private ArrayList<HBox>lista;
     ArrayList<Label> list_label;
-    private Stack<String> pilha;
-    private Queue<String> fila;
-    private Lista[] listaVertices;
     private NArea tree;
+    private List<No> nos;
     
     @FXML
     private HBox paneTabelas;
@@ -122,6 +121,8 @@ public class FXMLDocumentController implements Initializable
     private TableView<Tabela> tv_Cores;
     @FXML
     private JFXButton btColorir;
+    @FXML
+    private Label lbCorte;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -141,9 +142,6 @@ public class FXMLDocumentController implements Initializable
         TableColumn col = new TableColumn("Arestas");
         tv_mi.getColumns().add(col);
         list_label = new ArrayList<>();
-        
-        pilha = new Stack();
-        fila = new LinkedList<>();
         
         tcVertice.setCellValueFactory(new PropertyValueFactory("vertice"));
         tcPreNum.setCellValueFactory(new PropertyValueFactory("prenum"));
@@ -922,6 +920,7 @@ public class FXMLDocumentController implements Initializable
     private void clickColorir(ActionEvent event) 
     {
         tree = new NArea();
+        nos = new LinkedList<>();
         ObservableList<PontoArticulacao> pa = tvVerticeCorte.getItems();
         Profundidade p = new Profundidade(vertices.size());
         tree.inserir(Integer.parseInt(vertices.get(0).getButton().getText()), 0);
@@ -933,6 +932,13 @@ public class FXMLDocumentController implements Initializable
         tree.in_ordem(tree.getRaiz());
         tree.refresh(tree.getRaiz(),pa);
         tvVerticeCorte.refresh();
+        tree.insereLista(tree.getRaiz(),nos);
+        
+        for (int i = 0; i < nos.size(); i++) 
+        {
+            if(pa.get(nos.get(i).getVinfo()).getPrenum() <= pa.get(nos.get(i).getVinfo()).getMenorFilho())
+                lbCorte.setText(lbCorte.getText() + nos.get(i).getVinfo() + ",");
+        }
         pa.get(0);
     }
 

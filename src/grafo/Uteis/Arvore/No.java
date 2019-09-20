@@ -101,5 +101,18 @@ public class No
         this.menor = menor;
     }
 
+    public void setN(int N) 
+    {
+        this.N = N;
+        
+        No[] auxLig = vLig;
+        vLig = new No[N];
+        for (int i = 0; i < this.N; i++) 
+            this.setvLig(i, null);
+        
+        for (int i = 0; i < auxLig.length; i++) 
+            this.setvLig(i, new No(auxLig[i].getVinfo(), 0));
+    }
+
     
 }
