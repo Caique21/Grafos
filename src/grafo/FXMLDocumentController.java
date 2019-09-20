@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXTextField;
 import grafo.Uteis.Aresta;
 import grafo.Uteis.Arrow;
 import grafo.Uteis.Arvore.NArea;
+import grafo.Uteis.Arvore.No;
 import grafo.Uteis.Buscas.Lista;
 import grafo.Uteis.Buscas.Profundidade;
 import grafo.Uteis.Incidencia;
@@ -915,40 +916,6 @@ public class FXMLDocumentController implements Initializable
         return true;
     }
     
-    public void transforma()
-    {
-        /*ArrayList<Aresta> auxA = arestas;
-        listaVertices = new Lista[vertices.size()];
-        
-        for (int i = 0; i < vertices.size(); i++) 
-        {
-            ArrayList<Aresta> auxA2 = new ArrayList<>();
-            listaVertices[i] = new Lista();
-            
-            for (int j = 0; j < auxA.size(); j++) 
-                if(auxA.get(j).getLinha().getOrigem() == vertices.get(i).getButton().getText())
-                {
-                    auxA2.add(auxA.get(j));
-                }
-                else if(auxA.get(j).getLinha().getDestino() == vertices.get(i).getButton().getText() && !auxA.get(j).getLinha().isSeta())
-                {
-                    Aresta a = new Aresta();
-                    Arrow ar = new Arrow(j, j, j, j, auxA.get(j).getLinha().getDestino(), auxA.get(j).getLinha().getOrigem());
-                    a.setLinha(ar);
-                    auxA2.add(a);
-                }
-                    
-            
-            
-            for (int j = 0; j < auxA2.size(); j++) 
-            {
-                int a = Integer.parseInt(auxA2.get(j).getLinha().getDestino());
-                listaVertices[i].insere(a);
-            }
-                
-            
-        }*/
-    }
     ///////////////////////////////////// LISTA /////////////////////////////////////
 
     @FXML
@@ -957,9 +924,15 @@ public class FXMLDocumentController implements Initializable
         tree = new NArea();
         ObservableList<PontoArticulacao> pa = tvVerticeCorte.getItems();
         Profundidade p = new Profundidade(vertices.size());
+        tree.inserir(Integer.parseInt(vertices.get(0).getButton().getText()), 0);
         criaArvore();
         p.busca(pa, tree.getRaiz(), 0);
+        tree.verificaLigAlt(tree.getRaiz(),pa);
+        tvVerticeCorte.setItems(pa);
+        
         tree.in_ordem(tree.getRaiz());
+        tree.refresh(tree.getRaiz(),pa);
+        tvVerticeCorte.refresh();
         pa.get(0);
     }
 
@@ -988,7 +961,12 @@ public class FXMLDocumentController implements Initializable
                 }
             }
             
-            tree.inserir(Integer.parseInt(vertices.get(i).getButton().getText()), aux.size());
+            No ret = tree.find(tree.getRaiz(),Integer.parseInt(vertices.get(i).getButton().getText()));
+            if(aux.size() > 0)
+                ret.setN(aux.size());
+            
+            for (int j = 0; j < aux.size(); j++) 
+                tree.inserir(ret,Integer.parseInt(aux.get(j).getLinha().getDestino()), 0);
             
         }
     }
