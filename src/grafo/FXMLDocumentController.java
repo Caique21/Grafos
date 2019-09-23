@@ -12,7 +12,6 @@ import grafo.Uteis.Aresta;
 import grafo.Uteis.Arrow;
 import grafo.Uteis.Arvore.NArea;
 import grafo.Uteis.Arvore.No;
-import grafo.Uteis.Buscas.Lista;
 import grafo.Uteis.Buscas.Profundidade;
 import grafo.Uteis.Incidencia;
 import grafo.Uteis.PontoArticulacao;
@@ -22,9 +21,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.ResourceBundle;
-import java.util.Stack;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -36,6 +33,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
@@ -118,11 +116,13 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private VBox paneListaCores;
     @FXML
-    private TableView<Tabela> tv_Cores;
+    private TableView<Incidencia> tv_Cores;
     @FXML
     private JFXButton btColorir;
     @FXML
     private Label lbCorte;
+    @FXML
+    private Label lbVerticeInicial;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -922,10 +922,79 @@ public class FXMLDocumentController implements Initializable
         tree = new NArea();
         nos = new LinkedList<>();
         ObservableList<PontoArticulacao> pa = tvVerticeCorte.getItems();
+        
         Profundidade p = new Profundidade(vertices.size());
-        tree.inserir(Integer.parseInt(vertices.get(0).getButton().getText()), 0);
+        tree.inserir(Integer.parseInt(vertices.get(0).getButton().getText()), 0,tvVerticeCorte.getItems().get(0));
+        
+        criaArvore();
+        coloracao();
+        vertice_de_corte();
+        
+        colori_vertice();
+    }
+    
+    private void coloracao()
+    {
+        TableColumn col = new TableColumn("Vértice");
+        col.setStyle("-fx-alignment: CENTER;");
+        col.setCellValueFactory(new PropertyValueFactory("parametro0"));
+        tv_Cores.getColumns().add(col);
+    
+        for (int i = 0; i < vertices.size(); i++) 
+        {
+            col = new TableColumn(vertices.get(i).getButton().getText());
+            int pos = Integer.parseInt(vertices.get(i).getButton().getText());
+            col.setCellValueFactory(new PropertyValueFactory("parametro"+(pos+1)));
+            col.setMaxWidth(35);
+            tv_Cores.getColumns().add(col);
+        }
+        
+        ObservableList<Incidencia> inc = tv_Cores.getItems();
+        Incidencia incidencia = new Incidencia("0", "0", "0", "0", "0", "0", "0", "0", "0", "0");
+        incidencia.setParametro0("0");
+        inc.add(incidencia);
+        
+        for (int i = 1; i < vertices.size(); i++) 
+        {
+            incidencia = new Incidencia("0", "0", "0", "0", "0", "0", "0", "0", "0", "0");
+            incidencia.setParametro0(""+i);
+            inc.add(incidencia);
+        }
+        tv_Cores.setItems(inc);
+        
+        int maior = 0,inicial = 0;
+        for (int i = 0; i < paneListaCores.getChildren().size(); i++) 
+        {
+            HBox pane = (HBox)paneListaCores.getChildren().get(i);
+            if(pane.getChildren().size() > maior)
+            {
+                maior = pane.getChildren().size();
+                Button b = (Button)pane.getChildren().get(0);
+                inicial = Integer.parseInt(b.getText());
+            }
+        }
+        lbVerticeInicial.setText(lbVerticeInicial.getText() + " " + inicial);
+        
+        tree.inicializaCores(tree.getRaiz(),tv_Cores.getItems());
+        No ret = tree.find(tree.getRaiz(), inicial);
+        int[] vetorVisitado = new int[vertices.size()];
+        tree.colorir(ret,vetorVisitado);
+        tree.limpaZeros(tree.getRaiz(),vertices.size());
+        
+    }
+    
+    private void vertice_de_corte()
+    {
+        tree = new NArea();
+        nos = new LinkedList<>();
+        ObservableList<PontoArticulacao> pa = tvVerticeCorte.getItems();
+        
+        Profundidade p = new Profundidade(vertices.size());
+        tree.inserir(Integer.parseInt(vertices.get(0).getButton().getText()), 0,tvVerticeCorte.getItems().get(0));
+        
         criaArvore();
         p.busca(pa, tree.getRaiz(), 0);
+        
         tree.verificaLigAlt(tree.getRaiz(),pa);
         tvVerticeCorte.setItems(pa);
         
@@ -936,16 +1005,14 @@ public class FXMLDocumentController implements Initializable
         
         for (int i = 0; i < nos.size(); i++) 
         {
-            if(pa.get(nos.get(i).getVinfo()).getPrenum() <= pa.get(nos.get(i).getVinfo()).getMenorFilho())
-                lbCorte.setText(lbCorte.getText() + nos.get(i).getVinfo() + ",");
+            if(pa.get(nos.get(i).getinfo()).getPrenum() <= pa.get(nos.get(i).getinfo()).getMenorFilho())
+                lbCorte.setText(lbCorte.getText() + nos.get(i).getinfo() + ",");
         }
-        pa.get(0);
     }
 
     private void insereVerticePontoArticulacao(String vertice) 
     {
         PontoArticulacao p = new PontoArticulacao(vertice);
-        
         tvVerticeCorte.getItems().add(p);
     }
     
@@ -954,33 +1021,89 @@ public class FXMLDocumentController implements Initializable
         for (int i = 0; i < vertices.size(); i++) 
         {
             ArrayList<Aresta> aux = new ArrayList<>();
+            Aresta a = new Aresta();
+            No ret = tree.find(tree.getRaiz(),Integer.parseInt(vertices.get(i).getButton().getText()));
+            
             for (int j = 0; j < arestas.size(); j++) 
             {
+                a = null;
                 if(arestas.get(j).getLinha().getOrigem() == vertices.get(i).getButton().getText())
-                    aux.add(arestas.get(j));
+                    a = arestas.get(j);
                 if(!arestas.get(j).getLinha().isSeta() && arestas.get(j).getLinha().getDestino() == vertices.get(i).getButton().getText())
                 {
-                    Aresta a1 = new Aresta();
+                    a = new Aresta();
                     Arrow a2 = new Arrow(j, j, j, j, arestas.get(j).getLinha().getDestino(), arestas.get(j).getLinha().getOrigem());
-                    a1.setLinha(a2);
-                    boolean flag = true;
-                    for (int k = 0; k < aux.size() && flag; k++) 
-                    {
-                        if(aux.get(k).getLinha().getOrigem() == a2.getOrigem())
-                            flag = false;
-                    }
-                    if(flag)
-                        aux.add(a1);
+                    a.setLinha(a2);
                 }
+                if(a != null && !tree.verificaLigacao(tree.getRaiz(), a.getLinha().getOrigem(), a.getLinha().getDestino()))
+                    aux.add(a);
             }
             
-            No ret = tree.find(tree.getRaiz(),Integer.parseInt(vertices.get(i).getButton().getText()));
             if(aux.size() > 0)
                 ret.setN(aux.size());
             
             for (int j = 0; j < aux.size(); j++) 
-                tree.inserir(ret,Integer.parseInt(aux.get(j).getLinha().getDestino()), 0);
+            {
+                PontoArticulacao paux = tvVerticeCorte.getItems().get(Integer.parseInt(aux.get(j).getLinha().getDestino()));
+                No auxNo = tree.find(tree.getRaiz(), Integer.parseInt(aux.get(j).getLinha().getDestino()));
+                if(auxNo == null)
+                    tree.inserir(ret,Integer.parseInt(aux.get(j).getLinha().getDestino()), 0,paux);
+                else
+                    tree.inserir(ret,Integer.parseInt(aux.get(j).getLinha().getDestino()), 0,
+                        paux,auxNo);
+            }
+                
             
         }
+    }
+
+    private void colori_vertice() 
+    {
+        for (int i = 0; i < tv_Cores.getItems().size(); i++) 
+        {
+            Incidencia inc = tv_Cores.getItems().get(i);
+            String v = "",style = ";-fx-background-color:";
+            v = inc.getParametro0();
+            if(inc.getParametro1() != "-" && inc.getParametro1() != "0")
+                style +="RED";
+            
+            else if(inc.getParametro2() != "-" && inc.getParametro2() != "0")
+                style +="BLUE";
+            
+            else if(inc.getParametro3() != "-" && inc.getParametro3() != "0")
+                style +="GREEN";
+            
+            else if(inc.getParametro4() != "-" && inc.getParametro4() != "0")
+                style +="YELLOW";
+            
+            else if(inc.getParametro5() != "-" && inc.getParametro5() != "0")
+                style +="CYAN";
+            
+            else if(inc.getParametro6() != "-" && inc.getParametro6() != "0")
+                style +="GRAY";
+            
+            else if(inc.getParametro7() != "-" && inc.getParametro7() != "0")
+                style +="MAGENTA";
+            
+            else if(inc.getParametro8() != "-" && inc.getParametro8() != "0")
+                style +="DARKBLUE";
+            
+            else if(inc.getParametro9() != "-" && inc.getParametro9() != "0")
+                style +="DARKGREEN";
+            
+            else if(inc.getParametro10() != "-" && inc.getParametro10() != "0")
+            style +=";";
+            
+            Button b = new Button();
+            for (int j = 0; j < vertices.size(); j++) 
+            {
+                if(vertices.get(j).getButton().getText().equals(v))
+                    b = vertices.get(j).getButton();
+            }
+            b.setStyle(b.getStyle() + style);
+            
+        }
+        
+        atualiza_tela(false);
     }
 }

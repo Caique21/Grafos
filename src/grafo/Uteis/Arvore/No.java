@@ -5,47 +5,39 @@
  */
 package grafo.Uteis.Arvore;
 
-/**
- *
- * @author Aluno
- */
-import java.util.Arrays;
+import grafo.Uteis.Incidencia;
+import grafo.Uteis.PontoArticulacao;
 
-/**
- *
- * @author luish
- */
 public class No
 {
 
-    private int vinfo;
+    private int info;
     private No[] vLig;
-    private int TL;
     private int N;
-    private int prenum;
-    private String ligAlte;
-    private int menorFilho;
-    private int menor;
+    private PontoArticulacao p;
+    private Incidencia cores;
 
-    public No(int info, int N)
+    public No(int info, int N, PontoArticulacao p)
     {
-        this.vinfo = info;
+        this.info = info;
         this.vLig = new No[N];
-        this.TL = 1;
         this.N = N;
+        this.p = p;
+        this.cores = null;
     }
 
-    public int getVinfo()
+    public int getinfo()
     {
-        return vinfo;
+        return info;
     }
 
-    public void setInfo(int pos, int info)
+    public void setInfo(int info)
     {
-        this.vinfo = info;
+        this.info = info;
     }
 
-    public int getN() {
+    public int getN() 
+    {
         return N;
     }
     
@@ -59,46 +51,49 @@ public class No
         this.vLig[pos] = Lig;
     }
 
-    public int getTL()
+    public int getPrenum() 
     {
-        return TL;
+        return p.getPrenum();
     }
 
-    public void setTL(int TL)
+    public void setPrenum(int prenum) 
     {
-        this.TL = TL;
+        this.p.setPrenum(prenum);
     }
 
-    public int getPrenum() {
-        return prenum;
+    public String getLigAlte() 
+    {
+        return p.getLigAlte();
     }
 
-    public void setPrenum(int prenum) {
-        this.prenum = prenum;
+    public void setLigAlte(String ligAlte) 
+    {
+        this.p.setLigAlte(ligAlte);
     }
 
-    public String getLigAlte() {
-        return ligAlte;
+    public int getMenorFilho() 
+    {
+        return p.getMenorFilho();
     }
 
-    public void setLigAlte(String ligAlte) {
-        this.ligAlte = ligAlte;
+    public void setMenorFilho(int menorFilho) 
+    {
+        this.p.setMenorFilho(menorFilho);
     }
 
-    public int getMenorFilho() {
-        return menorFilho;
+    public int getMenor() 
+    {
+        return p.getMenor();
     }
 
-    public void setMenorFilho(int menorFilho) {
-        this.menorFilho = menorFilho;
+    public void setMenor(int menor) 
+    {
+        this.p.setMenor(menor);
     }
 
-    public int getMenor() {
-        return menor;
-    }
-
-    public void setMenor(int menor) {
-        this.menor = menor;
+    public PontoArticulacao getP() 
+    {
+        return p;
     }
 
     public void setN(int N) 
@@ -111,8 +106,102 @@ public class No
             this.setvLig(i, null);
         
         for (int i = 0; i < auxLig.length; i++) 
-            this.setvLig(i, new No(auxLig[i].getVinfo(), 0));
+            this.setvLig(i, new No(auxLig[i].getinfo(), 0,null));
     }
 
+    public Incidencia getCores() 
+    {
+        return cores;
+    }
+
+    public void setCores(Incidencia cores) 
+    {
+        this.cores = cores;
+    }
+
+    public void setCor(String cor, int pos)
+    {
+        switch(pos)
+        {
+            case 0:
+                this.cores.setParametro1(cor);
+                break;
+            case 1:
+                this.cores.setParametro2(cor);
+                break;
+            case 2:
+                this.cores.setParametro3(cor);
+                break;
+            case 3:
+                this.cores.setParametro4(cor);
+                break;
+            case 4:
+                this.cores.setParametro5(cor);
+                break;
+            case 5:
+                this.cores.setParametro6(cor);
+                break;
+            case 6:
+                this.cores.setParametro7(cor);
+                break;
+            case 7:
+                this.cores.setParametro8(cor);
+                break;
+            case 8:
+                this.cores.setParametro9(cor);
+                break;
+            case 9:
+                this.cores.setParametro10(cor);
+                break;
+        }
+    }
+
+    void setCor() 
+    {
+        if(this.cores.getParametro1() == "0")
+            this.cores.setParametro1("1");
+        else if(this.cores.getParametro2() == "0")
+            this.cores.setParametro2("2");
+        else if(this.cores.getParametro3() == "0")
+            this.cores.setParametro3("3");
+        else if(this.cores.getParametro4() == "0")
+            this.cores.setParametro4("4");
+        else if(this.cores.getParametro5() == "0")
+            this.cores.setParametro5("5");
+        else if(this.cores.getParametro6() == "0")
+            this.cores.setParametro6("6");
+        else if(this.cores.getParametro7() == "0")
+            this.cores.setParametro7("7");
+        else if(this.cores.getParametro8() == "0")
+            this.cores.setParametro8("8");
+        else if(this.cores.getParametro9() == "0")
+            this.cores.setParametro9("9");
+        else if(this.cores.getParametro10() == "0")
+            this.cores.setParametro10("10");
+    }
     
+    int getPosCor()
+    {
+        if(this.cores.getParametro1() != "-" && this.cores.getParametro1() != "0")
+            return 1;
+        if(this.cores.getParametro2() != "-" && this.cores.getParametro2() != "0")
+            return 2;
+        if(this.cores.getParametro3() != "-" && this.cores.getParametro3() != "0")
+            return 3;
+        if(this.cores.getParametro4() != "-" && this.cores.getParametro4() != "0")
+            return 4;
+        if(this.cores.getParametro5() != "-" && this.cores.getParametro5() != "0")
+            return 5;
+        if(this.cores.getParametro6() != "-" && this.cores.getParametro6() != "0")
+            return 6;
+        if(this.cores.getParametro7() != "-" && this.cores.getParametro7() != "0")
+            return 7;
+        if(this.cores.getParametro8() != "-" && this.cores.getParametro8() != "0")
+            return 8;
+        if(this.cores.getParametro9() != "-" && this.cores.getParametro9() != "0")
+            return 9;
+        if(this.cores.getParametro10() != "-" && this.cores.getParametro10() != "0")
+            return 10;
+        return -1;
+    }
 }

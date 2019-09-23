@@ -66,7 +66,7 @@
                            <children>
                               <HBox prefHeight="312.0" prefWidth="1287.0" spacing="10.0">
                                  <children>
-                                    <VBox prefHeight="312.0" prefWidth="357.0" spacing="5.0">
+                                    <VBox prefHeight="312.0" prefWidth="422.0" spacing="5.0">
                                        <children>
                                           <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="358.0" text="Estrutura Vértice de Corte">
                                              <font>
@@ -77,9 +77,9 @@
                                             <columns>
                                               <TableColumn fx:id="tcVertice" prefWidth="60.999969482421875" text="Vértice" />
                                               <TableColumn fx:id="tcPreNum" prefWidth="62.0" text="PréNum" />
-                                                <TableColumn fx:id="tcLigalter" prefWidth="82.0" text="Lig Alternativa" />
-                                                <TableColumn fx:id="tcMenorFilho" prefWidth="79.0" text="Menor Filho" />
-                                                <TableColumn fx:id="tcMenor" prefWidth="72.0" text="Menor" />
+                                                <TableColumn fx:id="tcLigalter" prefWidth="113.0" text="Lig Alternativa" />
+                                                <TableColumn fx:id="tcMenorFilho" prefWidth="99.0" text="Menor Filho" />
+                                                <TableColumn fx:id="tcMenor" prefWidth="76.0" text="Menor" />
                                             </columns>
                                           </TableView>
                                           <Label fx:id="lbCorte" text="Vértice de Corte: " />
@@ -88,20 +88,21 @@
                                           <Insets left="10.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox prefHeight="283.0" prefWidth="362.0">
+                                    <VBox prefHeight="312.0" prefWidth="398.0">
                                        <children>
                                           <Label fx:id="lb_lista1" alignment="CENTER" prefHeight="17.0" prefWidth="392.0" text="Lista" />
-                                          <VBox fx:id="paneListaCores" prefHeight="295.0" prefWidth="337.0" spacing="5.0" />
+                                          <VBox fx:id="paneListaCores" prefHeight="295.0" prefWidth="431.0" spacing="5.0" />
                                        </children>
                                     </VBox>
-                                    <VBox prefHeight="312.0" prefWidth="553.0">
+                                    <VBox prefHeight="312.0" prefWidth="445.0">
                                        <children>
                                           <Label alignment="CENTER" prefHeight="17.0" prefWidth="555.0" text="Tabela de Cores">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
                                           </Label>
-                                          <TableView fx:id="tv_Cores" prefHeight="291.0" prefWidth="552.0" />
+                                          <TableView fx:id="tv_Cores" prefHeight="272.0" prefWidth="445.0" />
+                                          <Label fx:id="lbVerticeInicial" text="Vértice Inicia:" />
                                        </children>
                                     </VBox>
                                  </children>

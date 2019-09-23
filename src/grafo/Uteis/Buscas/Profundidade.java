@@ -28,24 +28,6 @@ public class Profundidade
         indice = 1;
         pilha = new Stack();
     }
-    /*
-    public void busca(ObservableList<PontoArticulacao>p, Lista[] l, int pos)
-    {
-        pilha.push(l[pos]);
-        vetorVisitado[pos] = 1;
-        p.get(pos).setPrenum(indice);
-        
-        for (int i = 0; i < l[pos].size(); i++) 
-        {
-            System.out.println(""+vetorVisitado[1]);
-            if(vetorVisitado[l[pos].get(i).getIndice()] == 0)
-            {
-                indice++;
-                
-                busca(p, l,l[pos].get(i).getIndice());            
-            }
-        }
-    }*/
     
     public void busca(ObservableList<PontoArticulacao>p, No tree, int pos)
     {
@@ -56,10 +38,10 @@ public class Profundidade
 
         for (int i = 0; i < tree.getN(); i++) 
         {
-            if(vetorVisitado[tree.getVLig(i).getVinfo()] == 0)
+            if(vetorVisitado[tree.getVLig(i).getinfo()] == 0)
             {
                 indice++;
-                busca(p, tree.getVLig(i),tree.getVLig(i).getVinfo());            
+                busca(p, tree.getVLig(i),tree.getVLig(i).getinfo());            
             }
         }
     }
